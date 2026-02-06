@@ -109,6 +109,9 @@
             border: 2px solid #1a1a1a;
             border-radius: 8px;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         canvas { width: 100%; height: 100%; display: block; }
@@ -142,6 +145,7 @@
             flex: 1; padding: 16px; background: transparent;
             border: 2px solid var(--neon-blue); color: var(--neon-blue);
             font-weight: 800; text-transform: uppercase; border-radius: 8px; cursor: pointer;
+            font-family: 'JetBrains Mono';
         }
         .btn-ui:active { background: var(--neon-blue); color: #000; }
         .btn-abort { border-color: var(--neon-red); color: var(--neon-red); }
@@ -169,7 +173,6 @@
             justify-content: center;
             font-size: 0.8rem;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .sys-log { width: 90%; max-width: 1150px; background: #000; padding: 15px; margin-bottom: 30px; border-radius: 10px; height: 80px; overflow-y: auto; color: var(--neon-green); font-size: 0.75rem; border: 1px solid #111; }
@@ -189,7 +192,7 @@
             <span class="card-label">SNAKE VORTEX CORE</span>
             <div class="score-panel">
                 <span style="color:var(--neon-green)">SCORE: <span id="snakeScore">0</span></span>
-                <span style="color:var(--neon-pink)">FPS: <span id="snakeFPS">60</span></span>
+                <span style="color:var(--neon-pink)">FPS: <span id="snakeFPS">0</span></span>
             </div>
             <div class="game-viewport" id="snakeTouch">
                 <canvas id="snakeCanvas" width="400" height="400"></canvas>
@@ -207,30 +210,36 @@
                 <button class="btn-dir" onpointerdown="snake.setDir('DOWN')">▼</button>
                 <button class="btn-dir" onpointerdown="snake.setDir('RIGHT')">▶</button>
             </div>
-            <button class="btn-ui btn-abort" style="width:100%" onclick="snake.abort()">ABORT ENGINE</button>
+            <div class="btn-row">
+                <button class="btn-ui" onclick="snake.init()">START SNAKE</button>
+                <button class="btn-ui btn-abort" onclick="snake.abort()">ABORT</button>
+            </div>
         </div>
 
         <div class="engine-card">
             <span class="card-label">MINESWEEPER MATRIX</span>
             <div class="score-panel">
                 <span style="color:var(--neon-green)">SCORE: <span id="mineScore">0</span></span>
-                <span style="color:var(--neon-pink)">FPS: <span id="mineFPS">60</span></span>
+                <span style="color:var(--neon-pink)">FPS: <span id="mineFPS">0</span></span>
             </div>
             <div class="game-viewport">
                 <div id="mGrid" class="mine-field"></div>
                 <div id="mineOverlay" class="death-overlay">
                     <h3>BREACHED</h3>
                     <div class="btn-row" style="padding: 0 20px;">
-                        <button class="btn-ui" onclick="mines.reset()">RETRY</button>
+                        <button class="btn-ui" onclick="mines.init()">RETRY</button>
                         <button class="btn-ui btn-abort" onclick="mines.quit()">QUIT</button>
                     </div>
                 </div>
             </div>
-            <button class="btn-ui" style="margin-top: 20px; width: 100%;" onclick="mines.reset()">INITIALIZE MATRIX</button>
+            <div class="btn-row">
+                <button class="btn-ui" onclick="mines.init()">START MATRIX</button>
+                <button class="btn-ui btn-abort" onclick="mines.quit()">ABORT</button>
+            </div>
         </div>
     </main>
 
-    <div class="sys-log" id="termLog">[SYS] Neural Interface Loaded... Welcome Architect.</div>
+    <div class="sys-log" id="termLog">[SYS] Ready. Manual activation required.</div>
 
     <script>
         const term = (msg) => {
@@ -266,9 +275,10 @@
                 this.score = 0;
                 this.spawnApple();
                 document.getElementById('snakeScore').innerText = "0";
+                term("Snake Engine: ACTIVE");
                 requestAnimationFrame((t) => this.run(t));
             },
-            abort() { this.active = false; document.getElementById('snakeOverlay').style.display = 'none'; this.ctx.clearRect(0,0,400,400); },
+            abort() { this.active = false; document.getElementById('snakeOverlay').style.display = 'none'; this.ctx.clearRect(0,0,400,400); term("Snake Engine: HALTED"); },
             spawnApple() { this.apple = { x: Math.floor(Math.random()*20)*20, y: Math.floor(Math.random()*20)*20 }; },
             setDir(d) { if(d==='UP'&&this.dir!=='DOWN') this.nextDir='UP'; if(d==='DOWN'&&this.dir!=='UP') this.nextDir='DOWN'; if(d==='LEFT'&&this.dir!=='RIGHT') this.nextDir='LEFT'; if(d==='RIGHT'&&this.dir!=='LEFT') this.nextDir='RIGHT'; },
             run(t) {
@@ -284,7 +294,7 @@
                 if(this.dir==='UP') head.y-=20; if(this.dir==='DOWN') head.y+=20; if(this.dir==='LEFT') head.x-=20; if(this.dir==='RIGHT') head.x+=20;
                 if(head.x<0) head.x=380; if(head.x>=400) head.x=0; if(head.y<0) head.y=380; if(head.y>=400) head.y=0;
                 if(this.body.some(s=>s.x===head.x&&s.y===head.y)) { 
-                    this.score = 0; // Reset score on death
+                    this.score = 0; 
                     document.getElementById('snakeScore').innerText = "0";
                     this.active=false; 
                     document.getElementById('snakeOverlay').style.display='flex'; 
@@ -304,8 +314,8 @@
         /* --- MINESWEEPER ENGINE --- */
         const mines = {
             score: 0,
-            active: true,
-            reset() {
+            active: false,
+            init() {
                 this.score = 0; 
                 this.active = true;
                 document.getElementById('mineOverlay').style.display = 'none';
@@ -317,38 +327,30 @@
                     t.onclick = () => this.click(t);
                     g.appendChild(t);
                 }
-                term("Minesweeper Matrix Initialized.");
+                term("Minesweeper Matrix: ACTIVE");
                 requestAnimationFrame((t) => this.mon(t));
             },
             click(t) {
                 if(!this.active || t.style.background === 'rgb(34, 34, 34)') return;
-                
-                // Bomb logic
                 if(Math.random() < 0.15) {
-                    t.innerText = '💣'; 
-                    t.style.background = '#ff3131';
-                    
-                    // --- THE FIX: WIPE SCORE ON LOSS ---
-                    this.score = 0; 
-                    document.getElementById('mineScore').innerText = "0";
-                    
+                    t.innerText = '💣'; t.style.background = '#ff3131';
+                    this.score = 0; document.getElementById('mineScore').innerText = "0";
                     this.active = false;
                     document.getElementById('mineOverlay').style.display = 'flex';
-                    term("SYSTEM BREACHED: Score reset to 0.");
+                    term("SYSTEM BREACHED.");
                 } else {
                     t.innerText = Math.floor(Math.random()*4);
-                    t.style.background = '#222'; 
-                    t.style.color = '#39ff14';
+                    t.style.background = '#222'; t.style.color = '#39ff14';
                     this.score += 5;
                     document.getElementById('mineScore').innerText = this.score;
                 }
             },
             quit() { 
-                this.active = false; 
-                this.score = 0;
+                this.active = false; this.score = 0;
                 document.getElementById('mineScore').innerText = "0";
                 document.getElementById('mineOverlay').style.display='none'; 
                 document.getElementById('mGrid').innerHTML=''; 
+                term("Minesweeper Matrix: HALTED");
             },
             mon(t) { if(this.active) { updateFPS(t, 'mineFPS'); requestAnimationFrame((t)=>this.mon(t)); } }
         };
@@ -361,8 +363,6 @@
             if(Math.abs(dx)>Math.abs(dy)) snake.setDir(dx>0?'RIGHT':'LEFT');
             else snake.setDir(dy>0?'DOWN':'UP');
         }, {passive:true});
-
-        mines.reset();
     </script>
 </body>
 </html>
