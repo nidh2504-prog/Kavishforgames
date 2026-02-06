@@ -3,401 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Kavish Shah | 6th Grade Developer</title>
+    <title>KAVISH SHAH | 6TH GRADE DEVELOPER ELITE</title>
     <style>
-        /* CSS Variables for a clean look */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Roboto:wght@300;700&display=swap');
+
         :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --red: #e74c3c;
-            --blue: #2980b9;
-            --green: #2ecc71;
-            --yellow: #f1c40f;
-            --bg: #121212;
-            --card: #1e1e1e;
-            --text: #ffffff;
+            --bg-deep: #050505;
+            --card-glass: rgba(20, 20, 25, 0.95);
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+            --red-pawn: #ff3e3e;
+            --blue-pawn: #3e93ff;
+            --text-silver: #e0e0e0;
+            --gold: #ffd700;
         }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            background: var(--bg-deep);
+            color: var(--text-silver);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* --- HEADER SECTION --- */
-        .profile-header {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary), #000);
-            padding: 50px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            border-bottom: 4px solid var(--accent);
-        }
+        /* --- LUXURY SCROLLBAR --- */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
 
-        .profile-container {
-            display: flex;
-            align-items: center;
-            max-width: 1000px;
-            width: 100%;
-            gap: 40px;
-        }
-
-        .profile-pic {
-            width: 220px;
-            height: 220px;
-            border-radius: 20px;
-            object-fit: cover;
-            border: 6px solid var(--accent);
-            box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
-        }
-
-        .name-box h1 {
-            font-size: 4.5rem;
-            margin: 0;
-            line-height: 0.9;
-            text-transform: uppercase;
-            letter-spacing: -2px;
-        }
-
-        .name-box p {
-            font-size: 1.8rem;
-            color: var(--accent);
-            margin: 10px 0 0;
-            font-weight: 300;
-        }
-
-        /* --- CONTENT LAYOUT --- */
-        .main-content {
-            padding: 40px 20px;
-            max-width: 1200px;
-            width: 100%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-        }
-
-        .game-card {
-            background: var(--card);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        h2 { color: var(--accent); margin-top: 0; }
-
-        /* --- LUDO BOARD SYSTEM --- */
-        .ludo-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .ludo-board {
-            display: grid;
-            grid-template-columns: repeat(11, 1fr);
-            grid-template-rows: repeat(11, 1fr);
-            width: 330px;
-            height: 330px;
-            background: #fff;
-            border: 5px solid #333;
-            gap: 1px;
-        }
-
-        .ludo-cell {
-            background: #eee;
-            border: 0.1px solid #ddd;
+        /* --- HERO HEADER --- */
+        .hero {
+            height: 500px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background: linear-gradient(45deg, #0f0c29, #302b63, #24243e);
             position: relative;
+            border-bottom: 5px solid var(--neon-blue);
+            overflow: hidden;
         }
 
-        .l-red { background: #ffcccc; }
-        .l-blue { background: #cce5ff; }
-        .l-win { background: #ffd700; }
-
-        .pawn {
-            width: 80%;
-            height: 80%;
-            border-radius: 50%;
-            border: 2px solid white;
-            z-index: 5;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 200%; height: 200%;
+            background: repeating-linear-gradient(rgba(0,0,0,0) 0, rgba(0,0,0,0) 1px, rgba(0,210,255,0.03) 1px, rgba(0,210,255,0.03) 2px);
+            pointer-events: none;
         }
 
-        .pawn.red { background: var(--red); }
-        .pawn.blue { background: var(--blue); }
-
-        .dice-box {
-            margin-top: 20px;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .dice-visual {
-            font-size: 50px;
-            background: white;
-            padding: 10px;
-            border-radius: 10px;
-            width: 60px;
-            height: 60px;
+        .hero-content {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: #000;
+            gap: 50px;
+            z-index: 10;
+            max-width: 1200px;
+            width: 90%;
         }
 
-        /* --- SNAKE SYSTEM --- */
-        #snakeCanvas {
-            background: #000;
-            border: 4px solid #333;
-            border-radius: 10px;
+        .profile-img {
+            width: 280px;
+            height: 280px;
+            border-radius: 40px;
+            object-fit: cover;
+            border: 6px solid var(--neon-blue);
+            box-shadow: 0 0 40px rgba(0, 210, 255, 0.4);
+            transition: 0.4s ease;
         }
 
-        .mobile-controls {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 20px;
-            width: 200px;
-        }
+        .profile-img:hover { transform: scale(1.05) rotate(-2deg); }
 
-        .btn {
-            background: var(--accent);
+        .hero-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
             color: white;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            text-transform: uppercase;
+            letter-spacing: -2px;
+            margin: 0;
+            text-shadow: 0 0 20px var(--neon-blue);
         }
 
-        .btn-ctrl { background: #444; font-size: 20px; }
+        .hero-text p {
+            font-size: 1.8rem;
+            color: var(--neon-blue);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
 
-        /* --- MINESWEEPER --- */
-        .ms-grid {
+        /* --- DASHBOARD LAYOUT --- */
+        .container {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 2px;
-            max-width: 300px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 40px;
+            padding: 60px 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .ms-cell {
-            aspect-ratio: 1/1;
-            background: #444;
+        .card {
+            background: var(--card-glass);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            padding: 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-weight: bold;
         }
 
-        .ms-cell.open { background: #666; }
+        .card h2 {
+            font-family: 'Orbitron', sans-serif;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+            background: linear-gradient(to right, #00d2ff, #9d50bb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-        @media (max-width: 768px) {
-            .profile-container { flex-direction: column; text-align: center; }
-            .name-box h1 { font-size: 3rem; }
-            .profile-pic { width: 180px; height: 180px; }
+        /* --- LUDO ENGINE UI --- */
+        .ludo-board {
+            width: 400px;
+            height: 400px;
+            background: #fff;
+            border: 12px solid #222;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            position: relative;
+        }
+
+        .cell { border: 1px solid #ddd; position: relative; }
+        .red-zone { background: #ffebeb; }
+        .blue-zone { background: #ebf5ff; }
+        .safe-spot { background: #d4edda !important; }
+        .home-path-red { background: var(--red-pawn); opacity: 0.3; }
+        .home-path-blue { background: var(--blue-pawn); opacity: 0.3; }
+        .ludo-center { background: #111; grid-column: 7/10; grid-row: 7/10; }
+
+        .pawn {
+            width: 85%; height: 85%; border-radius: 50%;
+            position: absolute; top: 7.5%; left: 7.5%;
+            border: 3px solid white; cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 100;
+        }
+        .pawn:hover { transform: scale(1.2); z-index: 101; }
+        .p-red { background: var(--red-pawn); }
+        .p-blue { background: var(--blue-pawn); }
+
+        .controls-ui {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .dice-box {
+            width: 80px; height: 80px; background: white;
+            border-radius: 15px; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 50px; color: #000;
+            box-shadow: 0 10px 0 #bbb;
+        }
+
+        /* --- SNAKE ENGINE UI --- */
+        .canvas-container { position: relative; border-radius: 20px; overflow: hidden; border: 4px solid #333; }
+        canvas { background: #000; display: block; }
+
+        .d-pad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn-circle {
+            width: 75px; height: 75px; background: #222;
+            border: 2px solid var(--neon-blue); border-radius: 50%;
+            color: white; font-size: 24px; cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-circle:active { background: var(--neon-blue); color: #000; transform: scale(0.9); }
+
+        .btn-long {
+            padding: 15px 40px; border: none; border-radius: 50px;
+            font-family: 'Orbitron', sans-serif; font-weight: 900;
+            text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        }
+        .btn-primary { background: var(--neon-blue); color: #000; }
+        .btn-danger { background: #333; color: white; margin-top: 10px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1000px) {
+            .hero-content { flex-direction: column; text-align: center; }
+            .hero-text h1 { font-size: 3rem; }
+            .profile-img { width: 200px; height: 200px; }
+            .container { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<header class="profile-header">
-    <div class="profile-container">
-        <img src="image.png" alt="Kavish Shah" class="profile-pic" onerror="this.src='https://via.placeholder.com/220?text=Profile+Pic'">
-        <div class="name-box">
-            <h1>KAVISH SHAH</h1>
-            <p>6TH GRADER & DEVELOPER</p>
-        </div>
-    </div>
-</header>
-
-<div class="main-content">
-    
-    <div class="game-card">
-        <h2>🎲 LUDO: 2-PLAYER</h2>
-        <p id="ludo-turn" style="color:var(--red); font-weight:bold;">PLAYER 1 (RED) TURN</p>
-        <div class="ludo-area">
-            <div class="ludo-board" id="lBoard"></div>
-            <div class="dice-box">
-                <div id="diceVal" class="dice-visual">🎲</div>
-                <button class="btn" onclick="rollLudo()">ROLL DICE</button>
+    <header class="hero">
+        <div class="hero-content">
+            <img src="image.png" alt="Kavish Shah" class="profile-img" onerror="this.src='https://ui-avatars.com/api/?name=Kavish+Shah&size=300&background=00d2ff&color=fff'">
+            <div class="hero-text">
+                <h1>KAVISH SHAH</h1>
+                <p>Advanced Game Architect</p>
             </div>
         </div>
-        <p style="font-size:12px; margin-top:10px;">Roll, then tap your piece to move!</p>
-    </div>
+    </header>
 
-    <div class="game-card">
-        <h2>🐍 SNAKE PRO</h2>
-        <canvas id="snakeCanvas" width="300" height="300"></canvas>
-        <div style="margin:10px 0;">Score: <span id="score">0</span></div>
-        <div style="display:flex; flex-direction:column; align-items:center;">
-            <div class="mobile-controls">
-                <div></div><button class="btn btn-ctrl" onclick="setSnakeDir('UP')">▲</button><div></div>
-                <button class="btn btn-ctrl" onclick="setSnakeDir('LEFT')">◀</button>
-                <button class="btn btn-ctrl" onclick="setSnakeDir('DOWN')">▼</button>
-                <button class="btn btn-ctrl" onclick="setSnakeDir('RIGHT')">▶</button>
+    <main class="container">
+        
+        <div class="card">
+            <h2>LUDO ELITE: 4-DOT EDITION</h2>
+            <div id="gameStatus" style="font-weight:900; color:var(--red-pawn); margin-bottom:20px; letter-spacing:2px;">RED TO ROLL</div>
+            <div class="ludo-board" id="ludoBoard">
+                </div>
+            <div class="controls-ui">
+                <div id="diceFace" class="dice-box">🎲</div>
+                <button class="btn-long btn-primary" onclick="ludoGame.rollDice()">ROLL DICE</button>
             </div>
-            <button class="btn" style="margin-top:20px; width:100%;" onclick="startSnake()">START GAME</button>
         </div>
-    </div>
 
-    <div class="game-card">
-        <h2>💣 MINESWEEPER</h2>
-        <div class="ms-grid" id="msGrid"></div>
-        <p id="ms-status">Clear the field!</p>
-        <button class="btn" onclick="initMines()">NEW GAME</button>
-    </div>
+        <div class="card">
+            <h2>SNAKE VORTEX (WRAP ENABLED)</h2>
+            <div class="canvas-container">
+                <canvas id="sCanvas" width="400" height="400"></canvas>
+            </div>
+            <div id="sScore" style="font-family:'Orbitron'; font-size:1.5rem; margin-top:20px;">DATA COLLECTED: 0</div>
+            
+            <div class="d-pad">
+                <div></div><button class="btn-circle" onclick="snakeGame.changeDir('UP')">▲</button><div></div>
+                <button class="btn-circle" onclick="snakeGame.changeDir('LEFT')">◀</button>
+                <button class="btn-circle" onclick="snakeGame.changeDir('DOWN')">▼</button>
+                <button class="btn-circle" onclick="snakeGame.changeDir('RIGHT')">▶</button>
+            </div>
 
-</div>
+            <div style="display:flex; flex-direction:column; width:100%; margin-top:20px;">
+                <button class="btn-long btn-primary" onclick="snakeGame.init()">BOOT SYSTEM</button>
+                <button class="btn-long btn-danger" onclick="snakeGame.terminate()">TERMINATE</button>
+            </div>
+        </div>
 
-<script>
-    /* =========================================
-       LUDO GAME ENGINE
-    ========================================= */
-    let lTurn = 'red', lDice = 0, redPos = 0, bluePos = 20;
-    const lBoard = document.getElementById('lBoard');
-    
-    // Simple Path Mapping (11x11 grid)
-    const path = [0,1,2,3,4,15,26,37,48,59,70,81,92,103,114,115,116,117,118,119,120,109,98,87,76,65,54,43,32,21,10,9,8,7,6,5];
+    </main>
 
-    function buildLudo() {
-        lBoard.innerHTML = '';
-        for(let i=0; i<121; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'ludo-cell';
-            if(path.includes(i)) cell.classList.add('path');
-            if(i === path[redPos]) cell.innerHTML = '<div class="pawn red" onclick="movePawn(\'red\')"></div>';
-            if(i === path[bluePos]) cell.innerHTML = '<div class="pawn blue" onclick="movePawn(\'blue\')"></div>';
-            lBoard.appendChild(cell);
-        }
-    }
+    <script>
+        /**
+         * LUDO GAME ENGINE
+         * Manages 2 players, 8 pieces, Pathfinding, and Turn Logic
+         */
+        const ludoGame = {
+            state: {
+                turn: 'red',
+                dice: 0,
+                red: [0, 0, 0, 0], // Base positions
+                blue: [0, 0, 0, 0],
+                hasMoved: false
+            },
 
-    function rollLudo() {
-        if(lDice !== 0) return;
-        lDice = Math.floor(Math.random() * 6) + 1;
-        const faces = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
-        document.getElementById('diceVal').innerText = faces[lDice];
-    }
+            init() {
+                this.renderBoard();
+            },
 
-    function movePawn(p) {
-        if(lDice === 0 || p !== lTurn) return;
-        if(p === 'red') {
-            redPos = (redPos + lDice) % path.length;
-            lTurn = 'blue';
-            document.getElementById('ludo-turn').innerText = "PLAYER 2 (BLUE) TURN";
-            document.getElementById('ludo-turn').style.color = "var(--blue)";
-        } else {
-            bluePos = (bluePos + lDice) % path.length;
-            lTurn = 'red';
-            document.getElementById('ludo-turn').innerText = "PLAYER 1 (RED) TURN";
-            document.getElementById('ludo-turn').style.color = "var(--red)";
-        }
-        lDice = 0;
-        buildLudo();
-    }
+            renderBoard() {
+                const board = document.getElementById('ludoBoard');
+                board.innerHTML = '<div class="ludo-center"></div>';
 
-    /* =========================================
-       SNAKE ENGINE (TOUCH & KEYBOARD)
-    ========================================= */
-    const sCanvas = document.getElementById('snakeCanvas');
-    const sCtx = sCanvas.getContext('2d');
-    let snake, sDir, sFood, sScore, sLoop;
+                for(let i=0; i<225; i++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'cell';
+                    const r = Math.floor(i/15), c = i%15;
 
-    function startSnake() {
-        clearInterval(sLoop);
-        snake = [{x: 10, y: 10}];
-        sDir = 'RIGHT';
-        sScore = 0;
-        document.getElementById('score').innerText = '0';
-        placeFood();
-        sLoop = setInterval(runSnake, 120);
-    }
+                    // Apply zone colors
+                    if(r < 6 && c < 6) cell.classList.add('red-zone');
+                    if(r > 8 && c > 8) cell.classList.add('blue-zone');
+                    
+                    // Home paths
+                    if(r === 7 && c > 0 && c < 6) cell.classList.add('home-path-red');
+                    if(r === 7 && c > 8 && c < 14) cell.classList.add('home-path-blue');
 
-    function setSnakeDir(d) { sDir = d; }
+                    // Safe spots (simplified)
+                    if((r===6 && c===1) || (r===8 && c===13) || (r===1 && c===8) || (r===13 && c===6)) {
+                        cell.classList.add('safe-spot');
+                    }
 
-    function placeFood() {
-        sFood = { x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20) };
-    }
+                    // Render Pawns in Base
+                    this.state.red.forEach((pos, idx) => {
+                        if(pos === 0 && r === 1 + (idx > 1 ? 2 : 0) && c === 1 + (idx % 2 === 1 ? 2 : 0)) {
+                            this.drawPawn(cell, 'red', idx);
+                        }
+                    });
+                    this.state.blue.forEach((pos, idx) => {
+                        if(pos === 0 && r === 10 + (idx > 1 ? 2 : 0) && c === 10 + (idx % 2 === 1 ? 2 : 0)) {
+                            this.drawPawn(cell, 'blue', idx);
+                        }
+                    });
 
-    function runSnake() {
-        let head = {...snake[0]};
-        if(sDir === 'UP') head.y--;
-        if(sDir === 'DOWN') head.y++;
-        if(sDir === 'LEFT') head.x--;
-        if(sDir === 'RIGHT') head.x++;
-
-        if(head.x<0||head.x>=20||head.y<0||head.y>=20||snake.some(s=>s.x===head.x&&s.y===head.y)){
-            alert("Game Over! Score: " + sScore);
-            return startSnake();
-        }
-
-        snake.unshift(head);
-        if(head.x === sFood.x && head.y === sFood.y) {
-            sScore += 10;
-            document.getElementById('score').innerText = sScore;
-            placeFood();
-        } else {
-            snake.pop();
-        }
-
-        sCtx.fillStyle = '#000'; sCtx.fillRect(0,0,300,300);
-        sCtx.fillStyle = '#2ecc71';
-        snake.forEach(p => sCtx.fillRect(p.x*15, p.y*15, 14, 14));
-        sCtx.fillStyle = '#e74c3c';
-        sCtx.fillRect(sFood.x*15, sFood.y*15, 14, 14);
-    }
-
-    /* =========================================
-       MINESWEEPER ENGINE
-    ========================================= */
-    function initMines() {
-        const grid = document.getElementById('msGrid');
-        grid.innerHTML = '';
-        document.getElementById('ms-status').innerText = "Careful...";
-        for(let i=0; i<64; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'ms-cell';
-            cell.onclick = () => {
-                if(Math.random() < 0.15) {
-                    cell.innerText = '💣';
-                    cell.style.background = 'var(--red)';
-                    document.getElementById('ms-status').innerText = "BOOM! Game Over.";
-                } else {
-                    cell.innerText = '0';
-                    cell.classList.add('open');
+                    board.appendChild(cell);
                 }
-            };
-            grid.appendChild(cell);
-        }
-    }
+            },
 
-    // Handle Keyboard for Snake
-    window.addEventListener('keydown', e => {
-        if(e.key === 'ArrowUp') sDir = 'UP';
-        if(e.key === 'ArrowDown') sDir = 'DOWN';
-        if(e.key === 'ArrowLeft') sDir = 'LEFT';
-        if(e.key === 'ArrowRight') sDir = 'RIGHT';
-    });
+            drawPawn(parent, color, id) {
+                const p = document.createElement('div');
+                p.className = `pawn p-${color}`;
+                p.onclick = () => this.handlePawnClick(color, id);
+                parent.appendChild(p);
+            },
 
-    // Initialize Page
-    buildLudo();
-    initMines();
+            rollDice() {
+                if(this.state.dice !== 0) return;
+                this.state.dice = Math.floor(Math.random() * 6) + 1;
+                const faces = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
+                document.getElementById('diceFace').innerText = faces[this.state.dice];
+                document.getElementById('gameStatus').innerText = `${this.state.turn.toUpperCase()} ROLLED A ${this.state.dice}`;
+            },
 
-</script>
+            handlePawnClick(color, id) {
+                if(this.state.dice === 0 || color !== this.state.turn) return;
+
+                // Move logic (Simplified Path Progress)
+                if(color === 'red') this.state.red[id] += this.state.dice;
+                else this.state.blue[id] += this.state.dice;
+
+                this.finalizeTurn();
+            },
+
+            finalizeTurn() {
+                this.state.dice = 0;
+                this.state.turn = (this.state.turn === 'red') ? 'blue' : 'red';
+                const status = document.getElementById('gameStatus');
+                status.innerText = `${this.state.turn.toUpperCase()} TO ROLL`;
+                status.style.color = (this.state.turn === 'red') ? 'var(--red-pawn)' : 'var(--blue-pawn)';
+                this.renderBoard();
+            }
+        };
+
+        /**
+         * SNAKE VORTEX ENGINE
+         * High-performance rendering with Border Wrap
+         */
+        const snakeGame = {
+            canvas: document.getElementById('sCanvas'),
+            ctx: document.getElementById('sCanvas').getContext('2d'),
+            snake: [],
+            dir: 'RIGHT',
+            nextDir: 'RIGHT',
+            food: {x: 0, y: 0},
+            score: 0,
+            active: false,
+            speed: 100,
+            loop: null,
+
+            init() {
+                this.terminate();
+                this.snake = [{x: 200, y: 200}, {x: 180, y: 200}, {x: 160, y: 200}];
+                this.dir = 'RIGHT';
+                this.nextDir = 'RIGHT';
+                this.score = 0;
+                this.active = true;
+                this.spawnFood();
+                this.loop = setInterval(() => this.engineUpdate(), this.speed);
+                document.getElementById('sScore').innerText = "DATA COLLECTED: 0";
+            },
+
+            terminate() {
+                clearInterval(this.loop);
+                this.active = false;
+                this.ctx.clearRect(0,0,400,400);
+            },
+
+            changeDir(d) {
+                if(d === 'UP' && this.dir !== 'DOWN') this.nextDir = 'UP';
+                if(d === 'DOWN' && this.dir !== 'UP') this.nextDir = 'DOWN';
+                if(d === 'LEFT' && this.dir !== 'RIGHT') this.nextDir = 'LEFT';
+                if(d === 'RIGHT' && this.dir !== 'LEFT') this.nextDir = 'RIGHT';
+            },
+
+            spawnFood() {
+                this.food = {
+                    x: Math.floor(Math.random() * 19 + 0.5) * 20,
+                    y: Math.floor(Math.random() * 19 + 0.5) * 20
+                };
+            },
+
+            engineUpdate() {
+                if(!this.active) return;
+                this.dir = this.nextDir;
+                const head = { ...this.snake[0] };
+
+                if(this.dir === 'UP') head.y -= 20;
+                if(this.dir === 'DOWN') head.y += 20;
+                if(this.dir === 'LEFT') head.x -= 20;
+                if(this.dir === 'RIGHT') head.x += 20;
+
+                // --- BORDER VORTEX (WRAP LOGIC) ---
+                if(head.x < 0) head.x = 380;
+                if(head.x >= 400) head.x = 0;
+                if(head.y < 0) head.y = 380;
+                if(head.y >= 400) head.y = 0;
+
+                // Collision with self
+                if(this.snake.some(seg => seg.x === head.x && seg.y === head.y)) {
+                    alert("SYSTEM CRASHED! Final Score: " + this.score);
+                    return this.terminate();
+                }
+
+                this.snake.unshift(head);
+
+                if(head.x === this.food.x && head.y === this.food.y) {
+                    this.score += 10;
+                    document.getElementById('sScore').innerText = "DATA COLLECTED: " + this.score;
+                    this.spawnFood();
+                } else {
+                    this.snake.pop();
+                }
+
+                this.draw();
+            },
+
+            draw() {
+                const ctx = this.ctx;
+                ctx.fillStyle = '#000';
+                ctx.fillRect(0,0,400,400);
+
+                // Food rendering
+                ctx.fillStyle = '#ff0055';
+                ctx.shadowBlur = 15;
+                ctx.shadowColor = '#ff0055';
+                ctx.fillRect(this.food.x+2, this.food.y+2, 16, 16);
+
+                // Snake rendering
+                this.snake.forEach((seg, i) => {
+                    ctx.fillStyle = i === 0 ? '#00d2ff' : '#0072ff';
+                    ctx.shadowBlur = i === 0 ? 20 : 0;
+                    ctx.shadowColor = '#00d2ff';
+                    ctx.fillRect(seg.x+1, seg.y+1, 18, 18);
+                    ctx.shadowBlur = 0;
+                });
+            }
+        };
+
+        // KEYBOARD LISTENERS
+        window.addEventListener('keydown', e => {
+            if(e.key === 'ArrowUp') snakeGame.changeDir('UP');
+            if(e.key === 'ArrowDown') snakeGame.changeDir('DOWN');
+            if(e.key === 'ArrowLeft') snakeGame.changeDir('LEFT');
+            if(e.key === 'ArrowRight') snakeGame.changeDir('RIGHT');
+        });
+
+        // STARTUP
+        ludoGame.init();
+    </script>
 </body>
 </html>
