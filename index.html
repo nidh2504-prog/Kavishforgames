@@ -3,489 +3,420 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KAVISH SHAH | THE GAMING ARCHITECT</title>
+    <title>KAVISH SHAH | THE ARCHITECT</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@400;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@400;800&display=swap');
 
         :root {
-            --neon-cyan: #00f2ff;
-            --neon-magenta: #ff00ea;
-            --neon-lime: #39ff14;
-            --danger-red: #ff3e3e;
-            --cyber-blue: #3e93ff;
-            --obsidian: #08080c;
+            --neon-blue: #00f2ff;
+            --neon-green: #39ff14;
+            --neon-pink: #ff00ea;
+            --neon-red: #ff3131;
+            --bg-black: #08080c;
             --panel-bg: rgba(15, 15, 25, 0.95);
-            --border-glow: 0 0 15px rgba(0, 242, 255, 0.4);
+            --font-main: 'JetBrains Mono', monospace;
+            --font-head: 'Syncopate', sans-serif;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; }
 
         body {
-            font-family: 'JetBrains Mono', monospace;
-            background: var(--obsidian);
+            font-family: var(--font-main);
+            background: var(--bg-black);
             color: #fff;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 50% 50%, #1a1a2e 0%, #08080c 100%);
+                radial-gradient(circle at 2px 2px, rgba(0, 242, 255, 0.05) 1px, transparent 0);
+            background-size: 40px 40px;
         }
 
-        /* --- UI OVERLAY --- */
-        .scanlines {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            background-size: 100% 2px, 3px 100%; pointer-events: none; z-index: 1000;
-        }
-
-        /* --- LUXURY SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 12px; }
-        ::-webkit-scrollbar-track { background: #000; }
-        ::-webkit-scrollbar-thumb { 
-            background: var(--neon-cyan); 
-            border: 3px solid #000;
-            border-radius: 6px;
-        }
-
-        /* --- HEADER --- */
-        header {
+        /* --- THE COLOR CHANGING NAME BOX (HEADER) --- */
+        .color-box-header {
             width: 100%;
             padding: 100px 20px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-bottom: 3px solid var(--neon-cyan);
+            background: #000;
+            border-bottom: 3px solid var(--neon-blue);
             position: relative;
+            overflow: hidden;
         }
 
-        .header-content {
-            display: flex;
-            align-items: center;
-            max-width: 1200px;
-            width: 100%;
-            gap: 50px;
-        }
-
-        .p-pic-container {
+        .name-box {
+            padding: 40px 80px;
+            border: 5px solid var(--neon-blue);
+            border-radius: 20px;
+            text-align: center;
             position: relative;
-            padding: 8px;
-            background: linear-gradient(45deg, var(--neon-cyan), var(--neon-magenta));
-            border-radius: 40px;
-            animation: borderRotate 5s linear infinite;
+            animation: colorShift 8s infinite linear;
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.2);
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 5;
         }
 
-        @keyframes borderRotate {
-            0% { filter: hue-rotate(0deg); }
-            100% { filter: hue-rotate(360deg); }
+        @keyframes colorShift {
+            0% { border-color: var(--neon-blue); box-shadow: 0 0 40px var(--neon-blue); }
+            33% { border-color: var(--neon-pink); box-shadow: 0 0 40px var(--neon-pink); }
+            66% { border-color: var(--neon-green); box-shadow: 0 0 40px var(--neon-green); }
+            100% { border-color: var(--neon-blue); box-shadow: 0 0 40px var(--neon-blue); }
         }
 
-        .profile-pic {
-            width: 300px; height: 300px; border-radius: 35px;
-            object-fit: cover; display: block; border: 4px solid #000;
-        }
-
-        .name-container h1 {
-            font-family: 'Oxanium', sans-serif;
-            font-size: 6rem;
-            line-height: 0.8;
+        .name-box h1 {
+            font-family: var(--font-head);
+            font-size: 5rem;
+            margin: 0;
             letter-spacing: -5px;
-            margin-bottom: 20px;
-            text-shadow: var(--border-glow);
-        }
-
-        .role-tag {
-            font-size: 1.5rem;
-            color: var(--neon-cyan);
             text-transform: uppercase;
-            letter-spacing: 8px;
-            background: rgba(0, 242, 255, 0.1);
-            padding: 5px 20px;
-            border-radius: 5px;
+            animation: textGlow 8s infinite linear;
         }
 
-        /* --- DASHBOARD --- */
+        @keyframes textGlow {
+            0% { color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue); }
+            33% { color: var(--neon-pink); text-shadow: 0 0 20px var(--neon-pink); }
+            66% { color: var(--neon-green); text-shadow: 0 0 20px var(--neon-green); }
+            100% { color: var(--neon-blue); text-shadow: 0 0 20px var(--neon-blue); }
+        }
+
+        .tagline {
+            display: block;
+            font-size: 1.2rem;
+            margin-top: 15px;
+            letter-spacing: 12px;
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 800;
+        }
+
+        /* --- DASHBOARD GRID --- */
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
-            gap: 40px;
-            padding: 60px 20px;
-            max-width: 1500px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 50px;
+            padding: 80px 20px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
-        .panel {
+        .engine-card {
             background: var(--panel-bg);
-            border: 1px solid rgba(0, 242, 255, 0.2);
-            border-radius: 30px;
-            padding: 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 40px;
+            padding: 50px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
-            transition: 0.3s;
-        }
-
-        .panel:hover { border-color: var(--neon-cyan); transform: translateY(-5px); }
-
-        .panel-title {
-            font-family: 'Oxanium', sans-serif;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            color: var(--neon-cyan);
-            text-transform: uppercase;
-            width: 100%;
-            text-align: center;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
-        }
-
-        /* --- LUDO RENDERER --- */
-        .ludo-frame {
-            width: 420px; height: 420px;
-            background: #fff; border: 12px solid #1a1a1a;
-            display: grid; grid-template-columns: repeat(15, 1fr);
-            grid-template-rows: repeat(15, 1fr);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px);
             position: relative;
         }
 
-        .cell { border: 1px solid #ddd; position: relative; }
-        .red-base { background: #ffebeb; }
-        .blue-base { background: #ebf5ff; }
-        .safe { background: #d4edda; }
-        .home-center { background: #111; grid-column: 7/10; grid-row: 7/10; }
-
-        .pawn {
-            width: 80%; height: 80%; border-radius: 50%;
-            position: absolute; top: 10%; left: 10%;
-            border: 3px solid #fff; cursor: pointer;
-            z-index: 100; transition: 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .pawn:hover { transform: scale(1.3) translateY(-5px); }
-        .pawn.red { background: var(--danger-red); box-shadow: 0 0 15px var(--danger-red); }
-        .pawn.blue { background: var(--cyber-blue); box-shadow: 0 0 15px var(--cyber-blue); }
-
-        .dice-hub {
-            display: flex; gap: 30px; align-items: center; margin-top: 30px;
+        .engine-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, rgba(0,242,255,0.05) 0%, transparent 50%);
+            pointer-events: none; border-radius: 40px;
         }
 
-        .dice-ui {
-            width: 80px; height: 80px; background: #fff; color: #000;
-            border-radius: 15px; font-size: 55px; display: flex;
-            align-items: center; justify-content: center;
-            box-shadow: 0 8px 0 #999;
+        .card-title {
+            font-family: var(--font-head);
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            color: var(--neon-blue);
+            width: 100%;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 20px;
         }
 
-        /* --- SNAKE RENDERER --- */
-        #snakeBoard { border: 4px solid var(--neon-cyan); background: #000; border-radius: 15px; }
-        
-        .dpad {
+        /* --- SNAKE VORTEX SYSTEM --- */
+        .viewport {
+            border: 5px solid #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 20px #000;
+        }
+
+        canvas { background: #000; display: block; }
+
+        .stat-bar {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            margin: 25px 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .score-val { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+
+        .d-pad {
             display: grid; grid-template-columns: repeat(3, 1fr);
             gap: 15px; margin-top: 30px;
         }
-        .btn-arrow {
-            width: 75px; height: 75px; background: #1a1a1a;
-            border: 2px solid var(--neon-cyan); color: #fff;
-            font-size: 28px; cursor: pointer; border-radius: 50%;
+
+        .btn-ctrl {
+            width: 80px; height: 80px; background: #111;
+            border: 2px solid var(--neon-blue); color: #fff;
+            border-radius: 20px; font-size: 28px; cursor: pointer;
             transition: 0.2s;
         }
-        .btn-arrow:active { background: var(--neon-cyan); color: #000; }
+        .btn-ctrl:active { background: var(--neon-blue); color: #000; transform: scale(0.9); }
 
-        /* --- MINESWEEPER --- */
-        .m-grid { display: grid; grid-template-columns: repeat(8, 45px); gap: 5px; }
-        .m-cell {
-            width: 45px; height: 45px; background: #222; border-radius: 5px;
+        /* --- MINESWEEPER SYSTEM --- */
+        .m-grid {
+            display: grid; grid-template-columns: repeat(8, 45px); gap: 6px;
+        }
+
+        .m-tile {
+            width: 45px; height: 45px; background: #1a1a1a;
+            border: 1px solid #333; border-radius: 8px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; border: 1px solid #444; font-weight: 800;
+            cursor: pointer; transition: 0.3s; font-weight: 900;
+        }
+        .m-tile:hover { background: #252525; border-color: var(--neon-blue); }
+
+        /* --- SYSTEM BUTTONS --- */
+        .btn-sys {
+            width: 100%; padding: 18px; background: transparent;
+            border: 2px solid var(--neon-blue); color: var(--neon-blue);
+            font-family: var(--font-main); font-weight: 800;
+            text-transform: uppercase; border-radius: 50px;
+            cursor: pointer; transition: 0.4s; margin-top: 25px;
+        }
+        .btn-sys:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+
+        /* --- TERMINAL OUTPUT --- */
+        .console {
+            grid-column: 1 / -1;
+            background: #000;
+            border: 2px solid #111;
+            border-radius: 15px;
+            padding: 25px;
+            height: 180px;
+            overflow-y: auto;
+            color: var(--neon-green);
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
 
-        /* --- BUTTONS --- */
-        .btn-glow {
-            padding: 15px 40px; background: transparent;
-            border: 2px solid var(--neon-cyan); color: var(--neon-cyan);
-            font-family: 'Oxanium'; font-weight: 800; text-transform: uppercase;
-            cursor: pointer; transition: 0.3s; margin-top: 20px;
-            border-radius: 50px;
-        }
-        .btn-glow:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 30px var(--neon-cyan); }
-
-        @media (max-width: 900px) {
-            .header-content { flex-direction: column; text-align: center; }
-            .name-container h1 { font-size: 3.5rem; }
-            .profile-pic { width: 220px; height: 220px; }
+        @media (max-width: 800px) {
+            .name-box h1 { font-size: 2.8rem; letter-spacing: -2px; }
+            .name-box { padding: 30px 40px; }
             .dashboard { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
-<div class="scanlines"></div>
-
-<header>
-    <div class="header-content">
-        <div class="p-pic-container">
-            <img src="image.png" alt="Kavish Shah" class="profile-pic" onerror="this.src='https://ui-avatars.com/api/?name=Kavish+Shah&size=300&background=00f2ff&color=fff'">
-        </div>
-        <div class="name-container">
+    <header class="color-box-header">
+        <div class="name-box">
             <h1>KAVISH SHAH</h1>
-            <span class="role-tag">LEVEL 6 DEVELOPER</span>
+            <span class="tagline">ENGINEER 6.0</span>
         </div>
-    </div>
-</header>
+    </header>
 
-<main class="dashboard">
+    <main class="dashboard">
 
-    <div class="panel">
-        <h2 class="panel-title">LUDO CORE 4-DOT</h2>
-        <div id="lTurn" style="color:var(--danger-red); font-weight:bold; margin-bottom:15px; font-size:1.2rem;">P1 READY [RED]</div>
-        <div class="ludo-frame" id="ludoBoard"></div>
-        <div class="dice-hub">
-            <div id="diceVal" class="dice-ui">🎲</div>
-            <button class="btn-glow" onclick="ludoGame.roll()">ROLL SYSTEM</button>
+        <div class="engine-card">
+            <h2 class="card-title">SNAKE VORTEX [APPLE_MODE]</h2>
+            <div class="stat-bar">
+                <span>DATAPOINTS:</span>
+                <span id="score" class="score-val">0000</span>
+            </div>
+            <div class="viewport">
+                <canvas id="snakeCanvas" width="360" height="360"></canvas>
+            </div>
+            <div class="d-pad">
+                <div></div><button class="btn-ctrl" onclick="snake.setDir('UP')">▲</button><div></div>
+                <button class="btn-ctrl" onclick="snake.setDir('LEFT')">◀</button>
+                <button class="btn-ctrl" onclick="snake.setDir('DOWN')">▼</button>
+                <button class="btn-ctrl" onclick="snake.setDir('RIGHT')">▶</button>
+            </div>
+            <button class="btn-sys" onclick="snake.init()">INITIALIZE SYSTEM</button>
+            <button class="btn-sys" style="border-color:var(--neon-red); color:var(--neon-red)" onclick="snake.kill()">ABORT SEQUENCE</button>
         </div>
-        <p style="font-size:0.8rem; margin-top:15px; color:#888;">Roll the dice, then tap your piece to move.</p>
-    </div>
 
-    <div class="panel">
-        <h2 class="panel-title">SNAKE VORTEX [APPLE_MODE]</h2>
-        <canvas id="snakeBoard" width="360" height="360"></canvas>
-        <div id="sScore" style="margin-top:20px; font-size:1.5rem; color:var(--neon-lime)">SCORE: 000</div>
-        <div class="dpad">
-            <div></div><button class="btn-arrow" onclick="snakeGame.setDir('UP')">▲</button><div></div>
-            <button class="btn-arrow" onclick="snakeGame.setDir('LEFT')">◀</button>
-            <button class="btn-arrow" onclick="snakeGame.setDir('DOWN')">▼</button>
-            <button class="btn-arrow" onclick="snakeGame.setDir('RIGHT')">▶</button>
+        <div class="engine-card">
+            <h2 class="card-title">MINESWEEPER CORE</h2>
+            <div class="m-grid" id="mineGrid"></div>
+            <button class="btn-sys" onclick="mines.boot()">RELOAD MATRIX</button>
+            <div style="margin-top: 30px; color: #555; font-size: 0.8rem; text-align: center;">
+                LOGIC: Identify data-mines. Avoid system corruption.
+            </div>
         </div>
-        <div style="display:flex; gap:15px; width:100%; margin-top:20px;">
-            <button class="btn-glow" style="flex:1" onclick="snakeGame.init()">BOOT</button>
-            <button class="btn-glow" style="flex:1; border-color:var(--danger-red); color:var(--danger-red);" onclick="snakeGame.kill()">ABORT</button>
+
+        <div class="console" id="log">
+            [SYS] Kavish Shah Core Version 6.0.4 Loaded.<br>
+            [SYS] Snake Vortex Engine: Online.<br>
+            [SYS] Matrix Grid: Standby.<br>
         </div>
-    </div>
 
-    <div class="panel">
-        <h2 class="panel-title">MINESWEEPER PRO</h2>
-        <div class="m-grid" id="mineField"></div>
-        <button class="btn-glow" onclick="initMines()">RELOAD GRID</button>
-    </div>
+    </main>
 
-</main>
-
-<script>
-    /**
-     * LUDO ENGINE PRO
-     * Manages turn state, multiple piece tracking, and path mapping.
-     */
-    const ludoGame = {
-        state: {
-            turn: 'red',
-            dice: 0,
-            pieces: {
-                red: [0, 0, 0, 0], // 0 = in base
-                blue: [0, 0, 0, 0]
-            }
-        },
-
-        init() {
-            this.draw();
-        },
-
-        draw() {
-            const board = document.getElementById('ludoBoard');
-            board.innerHTML = '<div class="home-center"></div>';
-            
-            for(let i=0; i<225; i++) {
-                const cell = document.createElement('div');
-                cell.className = 'cell';
-                const r = Math.floor(i/15), c = i%15;
-
-                // Color Bases
-                if(r < 6 && c < 6) cell.classList.add('red-base');
-                if(r > 8 && c > 8) cell.classList.add('blue-base');
-
-                // Place Red Pieces
-                this.state.pieces.red.forEach((pos, idx) => {
-                    if(pos === 0 && r === 1 + (idx > 1 ? 2 : 0) && c === 1 + (idx % 2 === 1 ? 2 : 0)) {
-                        this.createPiece(cell, 'red', idx);
-                    }
-                });
-                // Place Blue Pieces
-                this.state.pieces.blue.forEach((pos, idx) => {
-                    if(pos === 0 && r === 11 + (idx > 1 ? 2 : 0) && c === 11 + (idx % 2 === 1 ? 2 : 0)) {
-                        this.createPiece(cell, 'blue', idx);
-                    }
-                });
-
-                board.appendChild(cell);
-            }
-        },
-
-        createPiece(parent, color, id) {
-            const p = document.createElement('div');
-            p.className = `pawn ${color}`;
-            p.onclick = () => this.move(color, id);
-            parent.appendChild(p);
-        },
-
-        roll() {
-            if(this.state.dice !== 0) return;
-            this.state.dice = Math.floor(Math.random() * 6) + 1;
-            const glyphs = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
-            document.getElementById('diceVal').innerText = glyphs[this.state.dice];
-        },
-
-        move(color, id) {
-            if(this.state.dice === 0 || color !== this.state.turn) return;
-            
-            // Logic: Move out of base on 6 or move along path
-            this.state.pieces[color][id] += this.state.dice;
-            
-            // Finalize Turn
-            this.state.dice = 0;
-            this.state.turn = (this.state.turn === 'red') ? 'blue' : 'red';
-            const status = document.getElementById('lTurn');
-            status.innerText = `TURN: ${this.state.turn.toUpperCase()}`;
-            status.style.color = (this.state.turn === 'red') ? 'var(--danger-red)' : 'var(--cyber-blue)';
-            this.draw();
+    <script>
+        // --- LOGGING UTILITY ---
+        const logger = (msg) => {
+            const l = document.getElementById('log');
+            l.innerHTML += `> ${msg}<br>`;
+            l.scrollTop = l.scrollHeight;
         }
-    };
 
-    /**
-     * SNAKE ENGINE SUPREME
-     * Handles buffering, Apple-eating, and border wrap.
-     */
-    const snakeGame = {
-        ctx: document.getElementById('snakeBoard').getContext('2d'),
-        snake: [],
-        food: {x: 0, y: 0},
-        dir: 'RIGHT',
-        nextDir: 'RIGHT',
-        score: 0,
-        running: false,
-        timer: null,
+        /**
+         * SNAKE VORTEX ENGINE
+         * Optimized for zero-latency, apple-spawning, and border-wrap logic.
+         */
+        const snake = {
+            ctx: document.getElementById('snakeCanvas').getContext('2d'),
+            body: [],
+            apple: {x: 0, y: 0},
+            dir: 'RIGHT',
+            nextDir: 'RIGHT',
+            score: 0,
+            active: false,
+            timer: null,
 
-        init() {
-            this.kill();
-            this.snake = [{x: 160, y: 160}, {x: 140, y: 160}, {x: 120, y: 160}];
-            this.dir = 'RIGHT';
-            this.nextDir = 'RIGHT';
-            this.score = 0;
-            this.running = true;
-            this.spawnApple();
-            document.getElementById('sScore').innerText = "SCORE: 000";
-            this.timer = setInterval(() => this.loop(), 100);
-        },
-
-        kill() {
-            clearInterval(this.timer);
-            this.running = false;
-            this.ctx.clearRect(0,0,360,360);
-        },
-
-        setDir(d) {
-            if(d==='UP' && this.dir!=='DOWN') this.nextDir='UP';
-            if(d==='DOWN' && this.dir!=='UP') this.nextDir='DOWN';
-            if(d==='LEFT' && this.dir!=='RIGHT') this.nextDir='LEFT';
-            if(d==='RIGHT' && this.dir!=='LEFT') this.nextDir='RIGHT';
-        },
-
-        spawnApple() {
-            this.food = {
-                x: Math.floor(Math.random() * 18) * 20,
-                y: Math.floor(Math.random() * 18) * 20
-            };
-        },
-
-        loop() {
-            if(!this.running) return;
-            this.dir = this.nextDir;
-            const head = {...this.snake[0]};
-
-            if(this.dir==='UP') head.y-=20;
-            if(this.dir==='DOWN') head.y+=20;
-            if(this.dir==='LEFT') head.x-=20;
-            if(this.dir==='RIGHT') head.x+=20;
-
-            // BORDER VORTEX WRAP
-            if(head.x < 0) head.x = 340;
-            if(head.x >= 360) head.x = 0;
-            if(head.y < 0) head.y = 340;
-            if(head.y >= 360) head.y = 0;
-
-            // Collision check
-            if(this.snake.some(s => s.x === head.x && s.y === head.y)) {
-                return this.init(); // Restart on crash
-            }
-
-            this.snake.unshift(head);
-
-            // Eat Apple logic
-            if(head.x === this.food.x && head.y === this.food.y) {
-                this.score += 10;
-                document.getElementById('sScore').innerText = "SCORE: " + this.score.toString().padStart(3, '0');
+            init() {
+                logger("Booting Snake Vortex...");
+                this.kill();
+                this.body = [
+                    {x: 180, y: 180},
+                    {x: 160, y: 180},
+                    {x: 140, y: 180},
+                    {x: 120, y: 180}
+                ];
+                this.dir = 'RIGHT';
+                this.nextDir = 'RIGHT';
+                this.score = 0;
+                this.active = true;
                 this.spawnApple();
-            } else {
-                this.snake.pop();
-            }
+                this.updateUI();
+                this.timer = setInterval(() => this.engineLoop(), 90);
+                logger("Vortex Engine: Stable at 90ms. Apple Sync: Validated.");
+            },
 
-            this.render();
-        },
+            kill() {
+                clearInterval(this.timer);
+                this.active = false;
+                this.ctx.clearRect(0,0,360,360);
+            },
 
-        render() {
-            const c = this.ctx;
-            c.fillStyle = '#000';
-            c.fillRect(0,0,360,360);
+            setDir(d) {
+                if(d === 'UP' && this.dir !== 'DOWN') this.nextDir = 'UP';
+                if(d === 'DOWN' && this.dir !== 'UP') this.nextDir = 'DOWN';
+                if(d === 'LEFT' && this.dir !== 'RIGHT') this.nextDir = 'LEFT';
+                if(d === 'RIGHT' && this.dir !== 'LEFT') this.nextDir = 'RIGHT';
+            },
 
-            // Draw Apple
-            c.fillStyle = 'var(--danger-red)';
-            c.shadowBlur = 15; c.shadowColor = 'red';
-            c.beginPath();
-            c.arc(this.food.x+10, this.food.y+10, 8, 0, Math.PI*2);
-            c.fill();
+            spawnApple() {
+                this.apple = {
+                    x: Math.floor(Math.random() * 18) * 20,
+                    y: Math.floor(Math.random() * 18) * 20
+                };
+            },
 
-            // Draw Snake
-            this.snake.forEach((s, i) => {
-                c.fillStyle = i === 0 ? 'var(--neon-cyan)' : '#007788';
-                c.shadowBlur = i === 0 ? 20 : 0;
-                c.shadowColor = 'var(--neon-cyan)';
-                c.fillRect(s.x+1, s.y+1, 18, 18);
-            });
-            c.shadowBlur = 0;
-        }
-    };
+            updateUI() {
+                document.getElementById('score').innerText = this.score.toString().padStart(4, '0');
+            },
 
-    /**
-     * MINESWEEPER LOGIC
-     */
-    function initMines() {
-        const field = document.getElementById('mineField');
-        field.innerHTML = '';
-        for(let i=0; i<64; i++) {
-            const cell = document.createElement('div');
-            cell.className = 'm-cell';
-            cell.onclick = () => {
-                if(Math.random() < 0.18) {
-                    cell.innerText = '💣';
-                    cell.style.background = 'var(--danger-red)';
-                    cell.style.borderColor = 'red';
-                } else {
-                    cell.innerText = '0';
-                    cell.style.background = '#444';
+            engineLoop() {
+                if(!this.active) return;
+                this.dir = this.nextDir;
+                const head = {...this.body[0]};
+
+                if(this.dir === 'UP') head.y -= 20;
+                if(this.dir === 'DOWN') head.y += 20;
+                if(this.dir === 'LEFT') head.x -= 20;
+                if(this.dir === 'RIGHT') head.x += 20;
+
+                // --- BORDER WRAP VORTEX ---
+                if(head.x < 0) head.x = 340;
+                if(head.x >= 360) head.x = 0;
+                if(head.y < 0) head.y = 340;
+                if(head.y >= 360) head.y = 0;
+
+                // Self-Collision Detection
+                if(this.body.some(seg => seg.x === head.x && seg.y === head.y)) {
+                    logger("COLLISION DETECTED. Resetting engine state...");
+                    return this.init();
                 }
-            };
-            field.appendChild(cell);
-        }
-    }
 
-    // Keyboard Listeners for Pro feel
-    window.addEventListener('keydown', e => {
-        if(e.key === 'ArrowUp') snakeGame.setDir('UP');
-        if(e.key === 'ArrowDown') snakeGame.setDir('DOWN');
-        if(e.key === 'ArrowLeft') snakeGame.setDir('LEFT');
-        if(e.key === 'ArrowRight') snakeGame.setDir('RIGHT');
-    });
+                this.body.unshift(head);
 
-    // Start everything
-    ludoGame.init();
-    initMines();
+                // --- APPLE CONSUMPTION LOGIC ---
+                if(head.x === this.apple.x && head.y === this.apple.y) {
+                    this.score += 100;
+                    this.updateUI();
+                    this.spawnApple();
+                    logger(`Apple consumed. Data stream: +100.`);
+                } else {
+                    this.body.pop();
+                }
 
-</script>
+                this.draw();
+            },
+
+            draw() {
+                const c = this.ctx;
+                c.fillStyle = '#000';
+                c.fillRect(0,0,360,360);
+
+                // Draw Apple (The classic red apple)
+                c.fillStyle = '#ff3131';
+                c.shadowBlur = 15; c.shadowColor = '#ff3131';
+                c.beginPath();
+                c.arc(this.apple.x + 10, this.apple.y + 10, 9, 0, Math.PI * 2);
+                c.fill();
+
+                // Draw Snake segments
+                this.body.forEach((seg, i) => {
+                    c.fillStyle = (i === 0) ? '#00f2ff' : '#00707a';
+                    c.shadowBlur = (i === 0) ? 20 : 0;
+                    c.shadowColor = '#00f2ff';
+                    c.fillRect(seg.x + 1, seg.y + 1, 18, 18);
+                    c.shadowBlur = 0;
+                });
+            }
+        };
+
+        /**
+         * MINESWEEPER ENGINE
+         */
+        const mines = {
+            grid: document.getElementById('mineGrid'),
+            boot() {
+                logger("Re-initializing Matrix Grid...");
+                this.grid.innerHTML = '';
+                for(let i=0; i<64; i++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'm-tile';
+                    tile.onclick = () => {
+                        if(Math.random() < 0.15) {
+                            tile.innerText = '💣';
+                            tile.style.color = '#ff3131';
+                            tile.style.backgroundColor = '#300';
+                            logger("DATA BREACH: Mine detonated.");
+                        } else {
+                            tile.innerText = Math.floor(Math.random() * 4);
+                            tile.style.color = '#39ff14';
+                            tile.style.backgroundColor = '#111';
+                        }
+                    };
+                    this.grid.appendChild(tile);
+                }
+            }
+        };
+
+        // Keyboard Event Handling
+        window.addEventListener('keydown', e => {
+            const keys = {ArrowUp:'UP', ArrowDown:'DOWN', ArrowLeft:'LEFT', ArrowRight:'RIGHT'};
+            if(keys[e.key]) snake.setDir(keys[e.key]);
+        });
+
+        // Initialize Matrix on Start
+        mines.boot();
+        logger("Site Ready. Welcome, Kavish.");
+    </script>
 </body>
 </html>
