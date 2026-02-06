@@ -2,134 +2,402 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kavish Shah - Official Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kavish Shah | 6th Grade Developer</title>
     <style>
-        :root { --red: #e74c3c; --blue: #3498db; --green: #2ecc71; --yellow: #f1c40f; }
-        body { font-family: 'Arial Black', sans-serif; background: #1a1a1a; color: white; margin: 0; padding: 20px; }
-        
-        /* HEADER */
-        .header { display: flex; align-items: center; background: #2c3e50; padding: 30px; border-radius: 20px; border-bottom: 5px solid var(--blue); margin-bottom: 30px; }
-        .profile-pic { width: 180px; height: 180px; border-radius: 20px; object-fit: cover; border: 4px solid white; margin-right: 30px; }
-        h1 { font-size: 3.5rem; margin: 0; letter-spacing: -2px; }
-        .grade-tag { background: var(--blue); padding: 5px 15px; border-radius: 5px; font-size: 1.2rem; }
+        /* CSS Variables for a clean look */
+        :root {
+            --primary: #2c3e50;
+            --accent: #3498db;
+            --red: #e74c3c;
+            --blue: #2980b9;
+            --green: #2ecc71;
+            --yellow: #f1c40f;
+            --bg: #121212;
+            --card: #1e1e1e;
+            --text: #ffffff;
+        }
 
-        /* LUDO BOARD */
-        .ludo-section { background: #fff; color: #333; padding: 20px; border-radius: 20px; max-width: 500px; margin: 20px auto; text-align: center; }
-        .ludo-grid { display: grid; grid-template-columns: repeat(11, 1fr); gap: 2px; background: #ddd; border: 4px solid #333; }
-        .ludo-cell { aspect-ratio: 1/1; background: white; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 10px; position: relative; }
-        .path { background: #ecf0f1; }
-        .safe { background: #95a5a6; }
-        .player-piece { width: 80%; height: 80%; border-radius: 50%; border: 2px solid #fff; cursor: pointer; z-index: 10; transition: 0.2s; }
-        .red { background: var(--red); }
-        .blue { background: var(--blue); }
+        body {
+            font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        /* SNAKE CONTROLS FOR PHONE */
-        .snake-container { background: #000; padding: 20px; border-radius: 20px; text-align: center; }
-        #snakeCanvas { border: 3px solid #555; max-width: 100%; }
-        .controls { display: grid; grid-template-columns: repeat(3, 60px); gap: 10px; justify-content: center; margin-top: 15px; }
-        .ctrl-btn { width: 60px; height: 60px; background: #444; color: white; border: none; border-radius: 10px; font-size: 20px; cursor: pointer; }
+        /* --- HEADER SECTION --- */
+        .profile-header {
+            width: 100%;
+            background: linear-gradient(135deg, var(--primary), #000);
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            border-bottom: 4px solid var(--accent);
+        }
 
-        button.dice-btn { background: var(--blue); color: white; font-size: 1.5rem; padding: 15px 30px; border: none; border-radius: 10px; cursor: pointer; margin: 10px; }
+        .profile-container {
+            display: flex;
+            align-items: center;
+            max-width: 1000px;
+            width: 100%;
+            gap: 40px;
+        }
+
+        .profile-pic {
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 6px solid var(--accent);
+            box-shadow: 0 0 20px rgba(52, 152, 219, 0.5);
+        }
+
+        .name-box h1 {
+            font-size: 4.5rem;
+            margin: 0;
+            line-height: 0.9;
+            text-transform: uppercase;
+            letter-spacing: -2px;
+        }
+
+        .name-box p {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin: 10px 0 0;
+            font-weight: 300;
+        }
+
+        /* --- CONTENT LAYOUT --- */
+        .main-content {
+            padding: 40px 20px;
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .game-card {
+            background: var(--card);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        h2 { color: var(--accent); margin-top: 0; }
+
+        /* --- LUDO BOARD SYSTEM --- */
+        .ludo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .ludo-board {
+            display: grid;
+            grid-template-columns: repeat(11, 1fr);
+            grid-template-rows: repeat(11, 1fr);
+            width: 330px;
+            height: 330px;
+            background: #fff;
+            border: 5px solid #333;
+            gap: 1px;
+        }
+
+        .ludo-cell {
+            background: #eee;
+            border: 0.1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .l-red { background: #ffcccc; }
+        .l-blue { background: #cce5ff; }
+        .l-win { background: #ffd700; }
+
+        .pawn {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            border: 2px solid white;
+            z-index: 5;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .pawn.red { background: var(--red); }
+        .pawn.blue { background: var(--blue); }
+
+        .dice-box {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .dice-visual {
+            font-size: 50px;
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+        }
+
+        /* --- SNAKE SYSTEM --- */
+        #snakeCanvas {
+            background: #000;
+            border: 4px solid #333;
+            border-radius: 10px;
+        }
+
+        .mobile-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            width: 200px;
+        }
+
+        .btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        .btn-ctrl { background: #444; font-size: 20px; }
+
+        /* --- MINESWEEPER --- */
+        .ms-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 2px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .ms-cell {
+            aspect-ratio: 1/1;
+            background: #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .ms-cell.open { background: #666; }
+
+        @media (max-width: 768px) {
+            .profile-container { flex-direction: column; text-align: center; }
+            .name-box h1 { font-size: 3rem; }
+            .profile-pic { width: 180px; height: 180px; }
+        }
     </style>
 </head>
 <body>
 
-<div class="header">
-    <img src="image.png" alt="Kavish Shah" class="profile-pic" onerror="this.style.background='#444'; console.log('Image not found. Check filename!')">
-    <div>
-        <h1>KAVISH SHAH</h1>
-        <span class="grade-tag">6TH GRADER</span>
+<header class="profile-header">
+    <div class="profile-container">
+        <img src="image.png" alt="Kavish Shah" class="profile-pic" onerror="this.src='https://via.placeholder.com/220?text=Profile+Pic'">
+        <div class="name-box">
+            <h1>KAVISH SHAH</h1>
+            <p>6TH GRADER & DEVELOPER</p>
+        </div>
     </div>
-</div>
+</header>
 
-<div class="ludo-section">
-    <h2 style="margin-top:0">2-PLAYER PRO LUDO</h2>
-    <div id="turn-display">Red's Turn</div>
-    <div class="ludo-grid" id="board"></div>
-    <div id="dice-result" style="font-size: 3rem; margin: 10px;">🎲</div>
-    <button class="dice-btn" onclick="rollDice()">ROLL DICE</button>
-</div>
-
-<div class="snake-container">
-    <h2>SNAKE PRO (Mobile Friendly)</h2>
-    <canvas id="snakeCanvas" width="300" height="300"></canvas>
-    <div class="controls">
-        <div></div><button class="ctrl-btn" onclick="changeDir('UP')">▲</button><div></div>
-        <button class="ctrl-btn" onclick="changeDir('LEFT')">◀</button>
-        <button class="ctrl-btn" onclick="changeDir('DOWN')">▼</button>
-        <button class="ctrl-btn" onclick="changeDir('RIGHT')">▶</button>
+<div class="main-content">
+    
+    <div class="game-card">
+        <h2>🎲 LUDO: 2-PLAYER</h2>
+        <p id="ludo-turn" style="color:var(--red); font-weight:bold;">PLAYER 1 (RED) TURN</p>
+        <div class="ludo-area">
+            <div class="ludo-board" id="lBoard"></div>
+            <div class="dice-box">
+                <div id="diceVal" class="dice-visual">🎲</div>
+                <button class="btn" onclick="rollLudo()">ROLL DICE</button>
+            </div>
+        </div>
+        <p style="font-size:12px; margin-top:10px;">Roll, then tap your piece to move!</p>
     </div>
-    <button class="dice-btn" onclick="startSnake()">START GAME</button>
+
+    <div class="game-card">
+        <h2>🐍 SNAKE PRO</h2>
+        <canvas id="snakeCanvas" width="300" height="300"></canvas>
+        <div style="margin:10px 0;">Score: <span id="score">0</span></div>
+        <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="mobile-controls">
+                <div></div><button class="btn btn-ctrl" onclick="setSnakeDir('UP')">▲</button><div></div>
+                <button class="btn btn-ctrl" onclick="setSnakeDir('LEFT')">◀</button>
+                <button class="btn btn-ctrl" onclick="setSnakeDir('DOWN')">▼</button>
+                <button class="btn btn-ctrl" onclick="setSnakeDir('RIGHT')">▶</button>
+            </div>
+            <button class="btn" style="margin-top:20px; width:100%;" onclick="startSnake()">START GAME</button>
+        </div>
+    </div>
+
+    <div class="game-card">
+        <h2>💣 MINESWEEPER</h2>
+        <div class="ms-grid" id="msGrid"></div>
+        <p id="ms-status">Clear the field!</p>
+        <button class="btn" onclick="initMines()">NEW GAME</button>
+    </div>
+
 </div>
 
 <script>
-    // --- LUDO LOGIC ---
-    let redPos = 0, bluePos = 15, turn = 'red', currentRoll = 0;
-    const boardEl = document.getElementById('board');
+    /* =========================================
+       LUDO GAME ENGINE
+    ========================================= */
+    let lTurn = 'red', lDice = 0, redPos = 0, bluePos = 20;
+    const lBoard = document.getElementById('lBoard');
     
-    function createLudo() {
-        boardEl.innerHTML = '';
-        for(let i=0; i<121; i++) { // 11x11 grid
+    // Simple Path Mapping (11x11 grid)
+    const path = [0,1,2,3,4,15,26,37,48,59,70,81,92,103,114,115,116,117,118,119,120,109,98,87,76,65,54,43,32,21,10,9,8,7,6,5];
+
+    function buildLudo() {
+        lBoard.innerHTML = '';
+        for(let i=0; i<121; i++) {
             const cell = document.createElement('div');
             cell.className = 'ludo-cell';
-            if(i === redPos) cell.innerHTML = '<div class="player-piece red" onclick="move(\'red\')"></div>';
-            if(i === bluePos) cell.innerHTML = '<div class="player-piece blue" onclick="move(\'blue\')"></div>';
-            boardEl.appendChild(cell);
+            if(path.includes(i)) cell.classList.add('path');
+            if(i === path[redPos]) cell.innerHTML = '<div class="pawn red" onclick="movePawn(\'red\')"></div>';
+            if(i === path[bluePos]) cell.innerHTML = '<div class="pawn blue" onclick="movePawn(\'blue\')"></div>';
+            lBoard.appendChild(cell);
         }
     }
 
-    function rollDice() {
-        currentRoll = Math.floor(Math.random() * 6) + 1;
-        document.getElementById('dice-result').innerText = ['','⚀','⚁','⚂','⚃','⚄','⚅'][currentRoll];
+    function rollLudo() {
+        if(lDice !== 0) return;
+        lDice = Math.floor(Math.random() * 6) + 1;
+        const faces = ['','⚀','⚁','⚂','⚃','⚄','⚅'];
+        document.getElementById('diceVal').innerText = faces[lDice];
     }
 
-    function move(player) {
-        if(currentRoll === 0 || player !== turn) return;
-        if(player === 'red') { redPos = (redPos + currentRoll) % 121; turn = 'blue'; }
-        else { bluePos = (bluePos + currentRoll) % 121; turn = 'red'; }
-        currentRoll = 0;
-        document.getElementById('turn-display').innerText = turn.toUpperCase() + "'s Turn";
-        createLudo();
+    function movePawn(p) {
+        if(lDice === 0 || p !== lTurn) return;
+        if(p === 'red') {
+            redPos = (redPos + lDice) % path.length;
+            lTurn = 'blue';
+            document.getElementById('ludo-turn').innerText = "PLAYER 2 (BLUE) TURN";
+            document.getElementById('ludo-turn').style.color = "var(--blue)";
+        } else {
+            bluePos = (bluePos + lDice) % path.length;
+            lTurn = 'red';
+            document.getElementById('ludo-turn').innerText = "PLAYER 1 (RED) TURN";
+            document.getElementById('ludo-turn').style.color = "var(--red)";
+        }
+        lDice = 0;
+        buildLudo();
     }
-    createLudo();
 
-    // --- SNAKE LOGIC ---
-    const canvas = document.getElementById("snakeCanvas");
-    const ctx = canvas.getContext("2d");
-    let snake, food, dir, gameInt;
+    /* =========================================
+       SNAKE ENGINE (TOUCH & KEYBOARD)
+    ========================================= */
+    const sCanvas = document.getElementById('snakeCanvas');
+    const sCtx = sCanvas.getContext('2d');
+    let snake, sDir, sFood, sScore, sLoop;
 
     function startSnake() {
-        clearInterval(gameInt);
-        snake = [{x: 150, y: 150}];
-        dir = "RIGHT";
-        spawnFood();
-        gameInt = setInterval(gameLoop, 150);
+        clearInterval(sLoop);
+        snake = [{x: 10, y: 10}];
+        sDir = 'RIGHT';
+        sScore = 0;
+        document.getElementById('score').innerText = '0';
+        placeFood();
+        sLoop = setInterval(runSnake, 120);
     }
 
-    function changeDir(d) { dir = d; }
+    function setSnakeDir(d) { sDir = d; }
 
-    function spawnFood() {
-        food = { x: Math.floor(Math.random()*29)*10, y: Math.floor(Math.random()*29)*10 };
+    function placeFood() {
+        sFood = { x: Math.floor(Math.random()*20), y: Math.floor(Math.random()*20) };
     }
 
-    function gameLoop() {
+    function runSnake() {
         let head = {...snake[0]};
-        if(dir === "UP") head.y -= 10;
-        if(dir === "DOWN") head.y += 10;
-        if(dir === "LEFT") head.x -= 10;
-        if(dir === "RIGHT") head.x += 10;
+        if(sDir === 'UP') head.y--;
+        if(sDir === 'DOWN') head.y++;
+        if(sDir === 'LEFT') head.x--;
+        if(sDir === 'RIGHT') head.x++;
 
-        if(head.x < 0 || head.x >= 300 || head.y < 0 || head.y >= 300) return startSnake();
-        
+        if(head.x<0||head.x>=20||head.y<0||head.y>=20||snake.some(s=>s.x===head.x&&s.y===head.y)){
+            alert("Game Over! Score: " + sScore);
+            return startSnake();
+        }
+
         snake.unshift(head);
-        if(head.x === food.x && head.y === food.y) spawnFood(); else snake.pop();
+        if(head.x === sFood.x && head.y === sFood.y) {
+            sScore += 10;
+            document.getElementById('score').innerText = sScore;
+            placeFood();
+        } else {
+            snake.pop();
+        }
 
-        ctx.fillStyle = "black"; ctx.fillRect(0,0,300,300);
-        ctx.fillStyle = "lime"; snake.forEach(s => ctx.fillRect(s.x, s.y, 9, 9));
-        ctx.fillStyle = "red"; ctx.fillRect(food.x, food.y, 9, 9);
+        sCtx.fillStyle = '#000'; sCtx.fillRect(0,0,300,300);
+        sCtx.fillStyle = '#2ecc71';
+        snake.forEach(p => sCtx.fillRect(p.x*15, p.y*15, 14, 14));
+        sCtx.fillStyle = '#e74c3c';
+        sCtx.fillRect(sFood.x*15, sFood.y*15, 14, 14);
     }
-</script>
 
+    /* =========================================
+       MINESWEEPER ENGINE
+    ========================================= */
+    function initMines() {
+        const grid = document.getElementById('msGrid');
+        grid.innerHTML = '';
+        document.getElementById('ms-status').innerText = "Careful...";
+        for(let i=0; i<64; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'ms-cell';
+            cell.onclick = () => {
+                if(Math.random() < 0.15) {
+                    cell.innerText = '💣';
+                    cell.style.background = 'var(--red)';
+                    document.getElementById('ms-status').innerText = "BOOM! Game Over.";
+                } else {
+                    cell.innerText = '0';
+                    cell.classList.add('open');
+                }
+            };
+            grid.appendChild(cell);
+        }
+    }
+
+    // Handle Keyboard for Snake
+    window.addEventListener('keydown', e => {
+        if(e.key === 'ArrowUp') sDir = 'UP';
+        if(e.key === 'ArrowDown') sDir = 'DOWN';
+        if(e.key === 'ArrowLeft') sDir = 'LEFT';
+        if(e.key === 'ArrowRight') sDir = 'RIGHT';
+    });
+
+    // Initialize Page
+    buildLudo();
+    initMines();
+
+</script>
 </body>
 </html>
