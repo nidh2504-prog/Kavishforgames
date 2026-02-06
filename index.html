@@ -99,7 +99,7 @@
             text-transform: uppercase;
         }
 
-        /* --- SNAKE SYSTEM --- */
+        /* --- GAME VIEWPORTS --- */
         .game-viewport {
             position: relative;
             width: 100%;
@@ -121,47 +121,56 @@
             font-size: 1.1rem;
         }
 
-        /* --- GAME OVER OVERLAY --- */
-        #deathOverlay {
+        /* --- OVERLAY SYSTEM (Universal) --- */
+        .death-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.9);
             display: none;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            z-index: 100;
+            backdrop-filter: blur(4px);
         }
 
-        #deathOverlay h3 { color: var(--neon-red); font-size: 2rem; margin-bottom: 20px; font-family: 'Syncopate'; }
+        .death-overlay h3 { color: var(--neon-red); font-size: 2rem; margin-bottom: 20px; font-family: 'Syncopate'; }
 
-        /* --- CONTROLS --- */
-        .joypad {
-            display: grid; grid-template-columns: repeat(3, 1fr);
-            gap: 12px; margin: 20px 0;
-        }
-
-        .btn-dir {
-            width: 65px; height: 65px; background: #111;
-            border: 2px solid var(--neon-blue); color: #fff;
-            border-radius: 15px; font-size: 22px;
-            display: flex; align-items: center; justify-content: center;
-        }
-
+        /* --- BUTTONS & CONTROLS --- */
         .btn-row { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
-
         .btn-ui {
             flex: 1; padding: 16px; background: transparent;
             border: 2px solid var(--neon-blue); color: var(--neon-blue);
             font-weight: 800; text-transform: uppercase; border-radius: 8px; cursor: pointer;
         }
-
         .btn-ui:active { background: var(--neon-blue); color: #000; }
         .btn-abort { border-color: var(--neon-red); color: var(--neon-red); }
 
-        /* --- MINESWEEPER --- */
-        .mine-field { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; width: 100%; max-width: 320px; }
-        .tile { aspect-ratio: 1/1; background: #111; border: 1px solid #222; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; }
+        .joypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+        .btn-dir { width: 65px; height: 65px; background: #111; border: 2px solid var(--neon-blue); color: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+
+        /* --- MINESWEEPER GRID --- */
+        .mine-field {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 5px;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+
+        .tile {
+            aspect-ratio: 1/1;
+            background: #111;
+            border: 1px solid #222;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
 
         .sys-log { width: 90%; max-width: 1150px; background: #000; padding: 15px; margin-bottom: 30px; border-radius: 10px; height: 80px; overflow-y: auto; color: var(--neon-green); font-size: 0.75rem; border: 1px solid #111; }
     </style>
@@ -177,14 +186,14 @@
 
     <main class="grid-container">
         <div class="engine-card">
-            <span class="card-label">SNAKE VORTEX 6.5</span>
+            <span class="card-label">SNAKE VORTEX CORE</span>
             <div class="score-panel">
-                <span style="color:var(--neon-green)">SCORE: <span id="curScore">0</span></span>
-                <span style="color:var(--neon-pink)">FPS: <span id="fpsShower">60</span></span>
+                <span style="color:var(--neon-green)">SCORE: <span id="snakeScore">0</span></span>
+                <span style="color:var(--neon-pink)">FPS: <span id="snakeFPS">60</span></span>
             </div>
-            <div class="game-viewport" id="touchRegion">
+            <div class="game-viewport" id="snakeTouch">
                 <canvas id="snakeCanvas" width="400" height="400"></canvas>
-                <div id="deathOverlay">
+                <div id="snakeOverlay" class="death-overlay">
                     <h3>WASTED</h3>
                     <div class="btn-row" style="padding: 0 20px;">
                         <button class="btn-ui" onclick="snake.init()">RETRY</button>
@@ -198,20 +207,30 @@
                 <button class="btn-dir" onpointerdown="snake.setDir('DOWN')">▼</button>
                 <button class="btn-dir" onpointerdown="snake.setDir('RIGHT')">▶</button>
             </div>
-            <div class="btn-row">
-                <button class="btn-ui" onclick="snake.init()">INITIALIZE</button>
-                <button class="btn-ui btn-abort" onclick="snake.abort()">ABORT</button>
-            </div>
+            <button class="btn-ui btn-abort" style="width:100%" onclick="snake.abort()">ABORT ENGINE</button>
         </div>
 
         <div class="engine-card">
             <span class="card-label">MINESWEEPER MATRIX</span>
-            <div class="mine-field" id="mGrid"></div>
-            <button class="btn-ui" style="margin-top: 20px; width: 100%;" onclick="mines.reset()">REBOOT MATRIX</button>
+            <div class="score-panel">
+                <span style="color:var(--neon-green)">DATA: <span id="mineScore">0</span></span>
+                <span style="color:var(--neon-pink)">FPS: <span id="mineFPS">60</span></span>
+            </div>
+            <div class="game-viewport">
+                <div id="mGrid" class="mine-field"></div>
+                <div id="mineOverlay" class="death-overlay">
+                    <h3>BREACHED</h3>
+                    <div class="btn-row" style="padding: 0 20px;">
+                        <button class="btn-ui" onclick="mines.reset()">RETRY</button>
+                        <button class="btn-ui btn-abort" onclick="mines.quit()">QUIT</button>
+                    </div>
+                </div>
+            </div>
+            <button class="btn-ui" style="margin-top: 20px; width: 100%;" onclick="mines.reset()">INITIALIZE MATRIX</button>
         </div>
     </main>
 
-    <div class="sys-log" id="termLog">[SYS] Kernal Loaded. Performance Monitoring: Active.</div>
+    <div class="sys-log" id="termLog">[SYS] Kernal V6.9 online. Neural games active.</div>
 
     <script>
         const term = (msg) => {
@@ -220,131 +239,104 @@
             l.scrollTop = l.scrollHeight;
         };
 
+        /* --- PERFORMANCE TRACKER --- */
+        let lastFrame = 0;
+        function updateFPS(now, elementId) {
+            const dt = now - lastFrame;
+            lastFrame = now;
+            if (now % 20 < 1) document.getElementById(elementId).innerText = Math.round(1000 / dt);
+        }
+
+        /* --- SNAKE ENGINE --- */
         const snake = {
             canvas: document.getElementById('snakeCanvas'),
             ctx: document.getElementById('snakeCanvas').getContext('2d'),
             body: [], apple: {x: 0, y: 0},
             dir: 'RIGHT', nextDir: 'RIGHT',
-            score: 0, active: false,
-            lastTick: 0, lastFrameTime: 0,
-            frameReq: null,
+            score: 0, active: false, lastTick: 0,
 
             init() {
-                document.getElementById('deathOverlay').style.display = 'none';
+                document.getElementById('snakeOverlay').style.display = 'none';
                 this.active = true;
                 this.body = [{x:200, y:200}, {x:180, y:200}, {x:160, y:200}];
                 this.dir = 'RIGHT'; this.nextDir = 'RIGHT';
                 this.score = 0;
                 this.spawnApple();
-                document.getElementById('curScore').innerText = "0";
-                term("Engine Re-initialized.");
-                this.frameReq = requestAnimationFrame((t) => this.run(t));
+                document.getElementById('snakeScore').innerText = "0";
+                requestAnimationFrame((t) => this.run(t));
             },
-
-            abort() {
-                this.active = false;
-                cancelAnimationFrame(this.frameReq);
-                document.getElementById('deathOverlay').style.display = 'none';
-                this.ctx.fillStyle = "#000";
-                this.ctx.fillRect(0,0,400,400);
-                term("SEQUENCE ABORTED.");
-            },
-
-            spawnApple() {
-                this.apple = {
-                    x: Math.floor(Math.random() * 20) * 20,
-                    y: Math.floor(Math.random() * 20) * 20
-                };
-            },
-
-            setDir(d) {
-                if(d === 'UP' && this.dir !== 'DOWN') this.nextDir = 'UP';
-                if(d === 'DOWN' && this.dir !== 'UP') this.nextDir = 'DOWN';
-                if(d === 'LEFT' && this.dir !== 'RIGHT') this.nextDir = 'LEFT';
-                if(d === 'RIGHT' && this.dir !== 'LEFT') this.nextDir = 'RIGHT';
-            },
-
+            abort() { this.active = false; document.getElementById('snakeOverlay').style.display = 'none'; this.ctx.clearRect(0,0,400,400); },
+            spawnApple() { this.apple = { x: Math.floor(Math.random()*20)*20, y: Math.floor(Math.random()*20)*20 }; },
+            setDir(d) { if(d==='UP'&&this.dir!=='DOWN') this.nextDir='UP'; if(d==='DOWN'&&this.dir!=='UP') this.nextDir='DOWN'; if(d==='LEFT'&&this.dir!=='RIGHT') this.nextDir='LEFT'; if(d==='RIGHT'&&this.dir!=='LEFT') this.nextDir='RIGHT'; },
             run(t) {
                 if(!this.active) return;
-                
-                // FPS Shower Logic
-                const dt = t - this.lastFrameTime;
-                this.lastFrameTime = t;
-                const fps = Math.round(1000 / dt);
-                if(t % 10 < 1) document.getElementById('fpsShower').innerText = fps;
-
-                const delta = t - this.lastTick;
-                if(delta > 105) { 
-                    this.lastTick = t;
-                    this.update();
-                }
+                updateFPS(t, 'snakeFPS');
+                if(t - this.lastTick > 110) { this.lastTick = t; this.update(); }
                 this.draw();
-                this.frameReq = requestAnimationFrame((t) => this.run(t));
+                requestAnimationFrame((t) => this.run(t));
             },
-
             update() {
                 this.dir = this.nextDir;
                 const head = {...this.body[0]};
-                if(this.dir === 'UP') head.y -= 20;
-                if(this.dir === 'DOWN') head.y += 20;
-                if(this.dir === 'LEFT') head.x -= 20;
-                if(this.dir === 'RIGHT') head.x += 20;
-
-                if(head.x < 0) head.x = 380; if(head.x >= 400) head.x = 0;
-                if(head.y < 0) head.y = 380; if(head.y >= 400) head.y = 0;
-
-                if(this.body.some(s => s.x === head.x && s.y === head.y)) {
-                    this.active = false;
-                    document.getElementById('deathOverlay').style.display = 'flex';
-                    term("COLLISION ERROR. Score: " + this.score);
-                    return;
-                }
-
+                if(this.dir==='UP') head.y-=20; if(this.dir==='DOWN') head.y+=20; if(this.dir==='LEFT') head.x-=20; if(this.dir==='RIGHT') head.x+=20;
+                if(head.x<0) head.x=380; if(head.x>=400) head.x=0; if(head.y<0) head.y=380; if(head.y>=400) head.y=0;
+                if(this.body.some(s=>s.x===head.x&&s.y===head.y)) { this.active=false; document.getElementById('snakeOverlay').style.display='flex'; return; }
                 this.body.unshift(head);
-                if(head.x === this.apple.x && head.y === this.apple.y) {
-                    this.score += 10;
-                    document.getElementById('curScore').innerText = this.score;
-                    this.spawnApple();
-                } else { this.body.pop(); }
+                if(head.x===this.apple.x && head.y===this.apple.y) { this.score+=10; document.getElementById('snakeScore').innerText=this.score; this.spawnApple(); }
+                else this.body.pop();
             },
-
             draw() {
-                const c = this.ctx;
-                c.fillStyle = '#000'; c.fillRect(0,0,400,400);
-                c.fillStyle = '#ff3131'; c.shadowBlur = 12; c.shadowColor = '#ff3131';
-                c.beginPath(); c.arc(this.apple.x+10, this.apple.y+10, 8, 0, Math.PI*2); c.fill();
-                c.shadowBlur = 0;
-                this.body.forEach((s, i) => {
-                    c.fillStyle = (i === 0) ? '#00f2ff' : '#006677';
-                    c.fillRect(s.x+1, s.y+1, 18, 18);
-                });
+                const c = this.ctx; c.fillStyle='#000'; c.fillRect(0,0,400,400);
+                c.fillStyle='#ff3131'; c.beginPath(); c.arc(this.apple.x+10,this.apple.y+10,8,0,Math.PI*2); c.fill();
+                this.body.forEach((s,i) => { c.fillStyle=(i===0)?'#00f2ff':'#006677'; c.fillRect(s.x+1,s.y+1,18,18); });
             }
         };
 
-        let sx = 0, sy = 0;
-        document.getElementById('touchRegion').addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
-        document.getElementById('touchRegion').addEventListener('touchend', e => {
-            let dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy;
-            if(Math.abs(dx) > Math.abs(dy)) snake.setDir(dx > 0 ? 'RIGHT' : 'LEFT');
-            else snake.setDir(dy > 0 ? 'DOWN' : 'UP');
-        }, {passive:true});
-
+        /* --- MINESWEEPER ENGINE (FIXED) --- */
         const mines = {
+            score: 0,
+            active: true,
             reset() {
+                this.score = 0; this.active = true;
+                document.getElementById('mineOverlay').style.display = 'none';
+                document.getElementById('mineScore').innerText = "0";
                 const g = document.getElementById('mGrid'); g.innerHTML = '';
                 for(let i=0; i<64; i++) {
-                    const t = document.createElement('div'); t.className = 'tile';
-                    t.onclick = () => {
-                        if(Math.random() < 0.15) { t.innerText = '💣'; t.style.background = '#400'; }
-                        else { t.innerText = Math.floor(Math.random()*4); t.style.background = '#222'; }
-                    };
+                    const t = document.createElement('div');
+                    t.className = 'tile';
+                    t.onclick = () => this.click(t);
                     g.appendChild(t);
                 }
-                term("Matrix Grid Rebooted.");
-            }
+                term("Minesweeper Matrix Initialized.");
+                requestAnimationFrame((t) => this.mon(t));
+            },
+            click(t) {
+                if(!this.active || t.style.background === 'rgb(34, 34, 34)') return;
+                if(Math.random() < 0.15) {
+                    t.innerText = '💣'; t.style.background = '#ff3131';
+                    this.active = false;
+                    document.getElementById('mineOverlay').style.display = 'flex';
+                    term("CRITICAL FAILURE: Mine Triggered.");
+                } else {
+                    t.innerText = Math.floor(Math.random()*4);
+                    t.style.background = '#222'; t.style.color = '#39ff14';
+                    this.score += 5;
+                    document.getElementById('mineScore').innerText = this.score;
+                }
+            },
+            quit() { this.active = false; document.getElementById('mineOverlay').style.display='none'; document.getElementById('mGrid').innerHTML=''; },
+            mon(t) { if(this.active) { updateFPS(t, 'mineFPS'); requestAnimationFrame((t)=>this.mon(t)); } }
         };
 
-        window.addEventListener('keydown', e => { if(e.key.includes('Arrow')) snake.setDir(e.key.replace('Arrow','').toUpperCase()); });
+        /* --- GESTURES --- */
+        let sx=0, sy=0;
+        document.getElementById('snakeTouch').addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
+        document.getElementById('snakeTouch').addEventListener('touchend', e => {
+            let dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+            if(Math.abs(dx)>Math.abs(dy)) snake.setDir(dx>0?'RIGHT':'LEFT');
+            else snake.setDir(dy>0?'DOWN':'UP');
+        }, {passive:true});
+
         mines.reset();
     </script>
 </body>
