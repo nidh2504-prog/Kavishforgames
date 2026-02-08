@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>KAVISH ARCHITECT | HUB</title>
-
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Share+Tech+Mono&display=swap');
 
@@ -12,243 +11,285 @@
     --neon-blue:#00f3ff;
     --neon-pink:#bc13fe;
     --bg-dark:#020208;
+    --danger: #ff2e2e;
 }
 
-* { box-sizing:border-box; user-select:none; }
+* { box-sizing:border-box; user-select:none; touch-action: none; }
 
 body {
-    margin:0;
-    background:var(--bg-dark);
+    margin:0; background:var(--bg-dark);
     font-family:'Share Tech Mono', monospace;
-    overflow:hidden;
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    color:white;
+    overflow:hidden; height: 100vh;
+    display: flex; flex-direction: column; color: white;
 }
 
-/* ================= HEADER ================= */
+/* --- RGB TRADEMARK HEADER --- */
 #trademark-header {
-    width:100%;
-    padding:15px;
-    text-align:center;
-    font-family:'Syncopate';
-    font-size:1.2rem;
-    letter-spacing:5px;
-    border-bottom:2px solid #fff;
-    animation:rgbShift 3s linear infinite;
-    background:#000;
+    width: 100%; padding: 15px; text-align: center;
+    font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 5px;
+    border-bottom: 2px solid #fff;
+    animation: rgbShift 3s linear infinite;
+    background: #000;
 }
 
 @keyframes rgbShift {
-    0%{color:red;border-color:red}
-    33%{color:lime;border-color:lime}
-    66%{color:blue;border-color:blue}
-    100%{color:red;border-color:red}
+    0% { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 15px #ff0000; }
+    33% { border-color: #00ff00; color: #00ff00; box-shadow: 0 0 15px #00ff00; }
+    66% { border-color: #0000ff; color: #0000ff; box-shadow: 0 0 15px #0000ff; }
+    100% { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 15px #ff0000; }
 }
 
-/* ================= HUB ================= */
+/* --- GAME HUB CONTENT --- */
 .hub-container {
-    flex:1;
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    padding:20px;
-    gap:20px;
-    flex-wrap:wrap;
-    overflow:auto;
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
 }
 
 .game-card {
-    background:#08080c;
-    border:1px solid #1a1a2e;
-    padding:20px;
-    border-radius:8px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    box-shadow:0 0 20px rgba(0,0,0,.6);
+    background: #08080c;
+    border: 1px solid #1a1a2e;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    position: relative;
 }
 
-.game-title {
-    font-family:'Syncopate';
-    font-size:.75rem;
-    color:#777;
-    margin-bottom:15px;
-    letter-spacing:2px;
+.game-title { 
+    font-family: 'Syncopate'; 
+    font-size: 0.8rem; 
+    color: #888; 
+    margin-bottom: 15px; 
+    letter-spacing: 2px;
 }
 
-/* ================= SNAKE ================= */
-#snakeCanvas { background:#000; border:1px solid #333 }
-
-/* ================= MINES ================= */
-#minefield {
-    display:grid;
-    grid-template-columns:repeat(8,30px);
-    gap:3px;
-}
-.cell {
-    width:30px;
-    height:30px;
-    background:#1a1a1a;
-    text-align:center;
-    line-height:30px;
-    font-size:.9rem;
-    cursor:pointer;
+/* --- SNAKE HUD & SCREENS --- */
+.game-hud {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: var(--neon-blue);
+    margin-bottom: 5px;
 }
 
-/* ================= LUDO ================= */
-#ludoBoard {
-    display:grid;
-    grid-template-columns:repeat(5,40px);
-    gap:2px;
-    margin-bottom:10px;
-}
-.ludoCell {
-    width:40px;
-    height:40px;
-    background:#111;
-    border:1px solid #222;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:18px;
-}
-.red { color:red }
-.green { color:lime }
-
-#diceBtn {
-    background:none;
-    border:1px solid #444;
-    color:#ccc;
-    padding:5px 10px;
-    cursor:pointer;
-    margin-top:8px;
+.canvas-wrapper {
+    position: relative;
+    width: 240px;
+    height: 240px;
 }
 
-/* ================= FOOTER ================= */
+#snakeCanvas { background: #000; border: 1px solid #333; }
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+.hidden { display: none !important; }
+
+/* --- BUTTONS --- */
+.btn {
+    padding: 8px 16px;
+    margin: 5px;
+    background: none;
+    border: 1px solid var(--neon-blue);
+    color: var(--neon-blue);
+    font-family: 'Syncopate';
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.btn:hover { background: var(--neon-blue); color: #000; }
+.btn-danger { border-color: var(--danger); color: var(--danger); }
+.btn-danger:hover { background: var(--danger); color: #fff; }
+
+/* --- MINESWEEPER --- */
+#minefield { display: grid; grid-template-columns: repeat(8, 30px); gap: 3px; }
+.cell { 
+    width: 30px; height: 30px; background: #1a1a1a; 
+    border-radius: 3px; cursor: pointer; text-align: center; 
+    font-size: 0.9rem; line-height: 30px; transition: 0.2s;
+}
+.cell:hover { background: #222; border: 1px solid var(--neon-blue); }
+
+/* --- SYSTEM DETECTION FOOTER --- */
 #system-footer {
-    background:#000;
-    padding:6px;
-    border-top:1px solid #222;
-    font-size:.65rem;
-    text-align:center;
-    color:#555;
+    background: #000; 
+    padding: 8px; 
+    border-top: 1px solid #222;
+    text-align: center; 
+    font-size: 0.7rem; 
+    color: #555; 
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 600px) {
+    .hub-container { flex-direction: column; overflow-y: auto; }
 }
 </style>
 </head>
-
 <body>
 
 <div id="trademark-header">KAVISHFORTECH ARCHITECT</div>
 
 <div class="hub-container">
+    <div class="game-card">
+        <div class="game-title">NEON_SNAKE.EXE</div>
+        
+        <div class="game-hud">
+            <span>SCORE: <span id="snakeScore">0</span></span>
+            <span>FPS: <span id="snakeFPS">0</span></span>
+        </div>
 
-<!-- ================= SNAKE ================= -->
-<div class="game-card">
-<div class="game-title">NEON_SNAKE.EXE</div>
-<canvas id="snakeCanvas" width="240" height="240"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="snakeCanvas" width="240" height="240"></canvas>
+            
+            <div id="snakeStartScreen" class="overlay">
+                <button class="btn" onclick="startSnake()">INITIALIZE START</button>
+            </div>
+
+            <div id="snakeGameOverScreen" class="overlay hidden">
+                <h2 style="color:var(--danger); font-family:'Syncopate'; font-size:0.8rem;">CORE_CRITICAL: FAILED</h2>
+                <button class="btn" onclick="startSnake()">RESTART</button>
+                <button class="btn btn-danger" onclick="abortSnake()">ABORT</button>
+            </div>
+        </div>
+        
+        <p style="font-size: 0.6rem; color: #444; margin-top: 10px;">ARROWS OR SWIPE TO MOVE</p>
+    </div>
+
+    <div class="game-card">
+        <div class="game-title">MINE_SWEEPER.LOGIC</div>
+        <div id="minefield"></div>
+        <button onclick="resetMines()" style="margin-top:15px; background:none; border:1px solid #333; color:#666; font-family:'Share Tech Mono'; cursor:pointer; padding: 5px 10px;">RELOAD GRID</button>
+    </div>
 </div>
 
-<!-- ================= MINES ================= -->
-<div class="game-card">
-<div class="game-title">MINE_SWEEPER.LOGIC</div>
-<div id="minefield"></div>
-<button onclick="resetMines()">RELOAD GRID</button>
-</div>
-
-<!-- ================= LUDO ================= -->
-<div class="game-card">
-<div class="game-title">LUDO_2P.SYS</div>
-<div id="ludoBoard"></div>
-<div id="turnInfo">TURN: 🔴</div>
-<button id="diceBtn">ROLL DICE</button>
-</div>
-
-</div>
-
-<div id="system-footer">INITIALIZING...</div>
+<div id="system-footer">INITIALIZING DETECTION...</div>
 
 <script>
-/* ================= SYSTEM DETECTION ================= */
-const ua = navigator.userAgent;
-let DEVICE="DESKTOP";
-if(/Android/i.test(ua)) DEVICE="ANDROID";
-if(/iPhone|iPad|iPod/i.test(ua)) DEVICE="IOS";
-
-document.getElementById("system-footer").innerText =
-`DEVICE:${DEVICE} | ${innerWidth}x${innerHeight}`;
-
-/* ================= SNAKE ================= */
-const ctx=document.getElementById("snakeCanvas").getContext("2d");
-let snake=[{x:10,y:10}],dir={x:1,y:0},food={x:5,y:5};
-
-function snakeStep(){
-let h={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
-if(h.x<0)h.x=23;if(h.x>23)h.x=0;
-if(h.y<0)h.y=23;if(h.y>23)h.y=0;
-snake.unshift(h);
-if(h.x===food.x&&h.y===food.y)
-food={x:Math.random()*24|0,y:Math.random()*24|0};
-else snake.pop();
-
-ctx.fillStyle="#000";ctx.fillRect(0,0,240,240);
-ctx.fillStyle="#0ff";snake.forEach(s=>ctx.fillRect(s.x*10,s.y*10,9,9));
-ctx.fillStyle="#f0f";ctx.fillRect(food.x*10,food.y*10,9,9);
+/* --- 1. SYSTEM DETECTION --- */
+function detectSystem() {
+    const ua = navigator.userAgent;
+    let device = "DESKTOP_STATION";
+    if(/Android/i.test(ua)) device = "ANDROID_UNIT";
+    else if(/iPhone|iPad|iPod/i.test(ua)) device = "iOS_UNIT";
+    
+    document.getElementById("system-footer").innerText = 
+        `DEVICE_SCAN: ${device} | RESOLUTION: ${window.innerWidth}x${window.innerHeight} | STATUS: ONLINE`;
 }
-setInterval(snakeStep,100);
+detectSystem();
 
-if(DEVICE==="DESKTOP"){
-addEventListener("keydown",e=>{
-if(e.key==="ArrowUp"&&dir.y===0)dir={x:0,y:-1};
-if(e.key==="ArrowDown"&&dir.y===0)dir={x:0,y:1};
-if(e.key==="ArrowLeft"&&dir.x===0)dir={x:-1,y:0};
-if(e.key==="ArrowRight"&&dir.x===0)dir={x:1,y:0};
+/* --- 2. SNAKE LOGIC --- */
+const snk = document.getElementById("snakeCanvas").getContext("2d");
+let sBody, sDir, sFood, snakeActive = false, snakeScore = 0;
+let lastFrameTime = 0;
+
+function startSnake() {
+    sBody = [{x:10,y:10}];
+    sDir = {x:1,y:0};
+    sFood = {x:5,y:5};
+    snakeScore = 0;
+    snakeActive = true;
+    document.getElementById('snakeScore').innerText = "0";
+    document.getElementById('snakeStartScreen').classList.add('hidden');
+    document.getElementById('snakeGameOverScreen').classList.add('hidden');
+}
+
+function abortSnake() {
+    snakeActive = false;
+    document.getElementById('snakeGameOverScreen').classList.add('hidden');
+    document.getElementById('snakeStartScreen').classList.remove('hidden');
+    snk.fillStyle = "#000";
+    snk.fillRect(0,0,240,240);
+}
+
+function stepSnake(currentTime) {
+    // Calculate FPS
+    const deltaTime = currentTime - lastFrameTime;
+    lastFrameTime = currentTime;
+    if(deltaTime > 0) document.getElementById('snakeFPS').innerText = Math.round(1000 / 100); // interval is 100ms
+
+    if (!snakeActive) return;
+
+    let head = {x: sBody[0].x + sDir.x, y: sBody[0].y + sDir.y};
+
+    // Wall Wrap Logic
+    if(head.x < 0) head.x = 23; if(head.x > 23) head.x = 0;
+    if(head.y < 0) head.y = 23; if(head.y > 23) head.y = 0;
+
+    // Self Collision Detection
+    for (let i = 0; i < sBody.length; i++) {
+        if (head.x === sBody[i].x && head.y === sBody[i].y) {
+            snakeActive = false;
+            document.getElementById('snakeGameOverScreen').classList.remove('hidden');
+            return;
+        }
+    }
+
+    sBody.unshift(head);
+
+    // Food Logic
+    if(head.x === sFood.x && head.y === sFood.y) {
+        snakeScore += 10;
+        document.getElementById('snakeScore').innerText = snakeScore;
+        sFood = {x: Math.floor(Math.random()*24), y: Math.floor(Math.random()*24)};
+    } else {
+        sBody.pop();
+    }
+
+    // Drawing
+    snk.fillStyle = "#000"; snk.fillRect(0,0,240,240);
+    snk.fillStyle = "#0ff"; sBody.forEach(b => snk.fillRect(b.x*10, b.y*10, 9, 9));
+    snk.fillStyle = "#f0f"; snk.fillRect(sFood.x*10, sFood.y*10, 9, 9);
+}
+
+// Fixed game loop interval (10FPS)
+setInterval(() => {
+    stepSnake(performance.now());
+}, 100);
+
+window.addEventListener("keydown", e => {
+    if(!snakeActive) return;
+    if(e.key === "ArrowUp" && sDir.y === 0) { sDir = {x:0, y:-1}; }
+    if(e.key === "ArrowDown" && sDir.y === 0) { sDir = {x:0, y:1}; }
+    if(e.key === "ArrowLeft" && sDir.x === 0) { sDir = {x:-1, y:0}; }
+    if(e.key === "ArrowRight" && sDir.x === 0) { sDir = {x:1, y:0}; }
 });
-}
 
-/* ================= MINES ================= */
-function resetMines(){
-const f=document.getElementById("minefield");f.innerHTML="";
-for(let i=0;i<64;i++){
-let c=document.createElement("div");
-c.className="cell";
-c.onclick=()=>c.innerText=Math.random()>.85?"💣":Math.random()*3|0;
-f.appendChild(c);
-}}
+/* --- 3. MINESWEEPER LOGIC --- */
+function resetMines() {
+    const field = document.getElementById("minefield");
+    field.innerHTML = '';
+    for(let i=0; i<64; i++) {
+        let c = document.createElement('div');
+        c.className = 'cell';
+        c.onclick = () => {
+            if(Math.random() > 0.85) { 
+                c.innerText = '💣'; c.style.background = '#400'; c.style.color = 'red';
+            } else { 
+                c.innerText = Math.floor(Math.random()*3); c.style.background = '#050505'; c.style.color = '#555';
+            }
+        };
+        field.appendChild(c);
+    }
+}
 resetMines();
-
-/* ================= LUDO ================= */
-const board=document.getElementById("ludoBoard");
-let pos=[0,0],turn=0;
-
-for(let i=0;i<25;i++){
-let d=document.createElement("div");
-d.className="ludoCell";
-board.appendChild(d);
-}
-
-function drawLudo(){
-[...board.children].forEach(c=>c.innerText="");
-board.children[pos[0]].innerText="🔴";
-board.children[pos[1]].innerText="🟢";
-}
-
-drawLudo();
-
-document.getElementById("diceBtn").onclick=()=>{
-let roll=1+Math.random()*6|0;
-pos[turn]+=roll;
-if(pos[turn]>=24){
-alert((turn===0?"RED":"GREEN")+" WINS");
-pos=[0,0];
-}
-turn=1-turn;
-document.getElementById("turnInfo").innerText=
-"TURN: "+(turn===0?"🔴":"🟢");
-drawLudo();
-};
 </script>
-
 </body>
 </html>
