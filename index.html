@@ -3,92 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KAVISH ARCHITECT | HUB V5.0</title>
+    <title>KAVISH ARCHITECT | MEGA HUB PRO</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Share+Tech+Mono&display=swap');
 
         :root {
             --neon-blue: #00f3ff;
             --neon-pink: #bc13fe;
+            --neon-green: #39ff14;
             --danger: #ff2e2e;
             --bg-dark: #020205;
+            --panel-bg: rgba(10, 10, 25, 0.95);
+            --header-border: #fff;
         }
 
-        * { box-sizing: border-box; user-select: none; touch-action: none; }
+        /* --- GLOBAL RESET --- */
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            touch-action: none;
+            margin: 0;
+            padding: 0;
+        }
 
         body {
-            margin: 0; background: var(--bg-dark);
+            background: var(--bg-dark);
             font-family: 'Share Tech Mono', monospace;
-            overflow: hidden; height: 100vh;
-            display: flex; flex-direction: column; color: #fff;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
         }
 
-        /* --- RGB TRADEMARK HEADER --- */
+        /* --- 1. RGB TRADEMARK HEADER --- */
         #trademark-header {
-            width: 100%; padding: 15px 0; text-align: center;
-            font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 6px;
-            border-bottom: 3px solid #fff; background: #000;
-            animation: rgbShift 3s linear infinite; z-index: 100;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+            font-family: 'Syncopate';
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            border-bottom: 3px solid var(--header-border);
+            background: #000;
+            animation: rgbShift 4s linear infinite;
+            z-index: 1000;
         }
+
         @keyframes rgbShift {
-            0% { border-color: #f00; color: #f00; box-shadow: 0 0 15px #f00; }
-            33% { border-color: #0f0; color: #0f0; box-shadow: 0 0 15px #0f0; }
-            66% { border-color: #00f; color: #00f; box-shadow: 0 0 15px #00f; }
-            100% { border-color: #f00; color: #f00; box-shadow: 0 0 15px #f00; }
+            0% { border-color: #f00; color: #f00; box-shadow: 0 4px 15px #f00; }
+            33% { border-color: #0f0; color: #0f0; box-shadow: 0 4px 15px #0f0; }
+            66% { border-color: #00f; color: #00f; box-shadow: 0 4px 15px #00f; }
+            100% { border-color: #f00; color: #f00; box-shadow: 0 4px 15px #f00; }
         }
 
-        .hub-container {
-            flex-grow: 1; display: flex; justify-content: center;
-            align-items: center; gap: 40px; padding: 20px; flex-wrap: wrap;
+        /* --- 2. LAYOUT ENGINE --- */
+        .master-container {
+            flex-grow: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 120px;
+            gap: 20px;
+            padding: 25px;
+            overflow: hidden;
         }
 
-        .game-card {
-            background: #080810; border: 1px solid #1a1a30;
-            padding: 15px; border-radius: 8px; position: relative;
-            width: 300px; display: flex; flex-direction: column;
+        .module {
+            background: var(--panel-bg);
+            border: 1px solid #1a1a35;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        .game-header {
-            display: flex; justify-content: space-between;
-            font-size: 0.7rem; color: var(--neon-blue); margin-bottom: 10px;
+        .module-header {
+            background: #000;
+            padding: 10px 15px;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .canvas-area {
-            position: relative; width: 260px; height: 260px;
-            background: #000; border: 1px solid #333; margin: 0 auto;
+        .module-title {
+            font-family: 'Syncopate';
+            font-size: 0.75rem;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .hud-stats {
+            font-size: 0.8rem;
+            color: var(--neon-blue);
+        }
+
+        /* --- 3. GAME AREAS --- */
+        .game-viewport {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle, #050510 0%, #000 100%);
+        }
+
+        canvas {
+            border: 1px solid #222;
+            background: #000;
         }
 
         /* --- MINESWEEPER GRID --- */
         #mine-grid {
-            display: grid; grid-template-columns: repeat(8, 30px);
-            gap: 2px; margin: auto;
-        }
-        .cell {
-            width: 30px; height: 30px; background: #111;
-            border: 1px solid #222; text-align: center; line-height: 30px;
-            cursor: pointer; font-weight: bold; font-size: 0.8rem;
+            display: grid;
+            grid-template-columns: repeat(8, 35px);
+            grid-template-rows: repeat(8, 35px);
+            gap: 4px;
         }
 
-        /* --- OVERLAYS --- */
-        .overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.9);
-            display: flex; flex-direction: column; align-items: center;
-            justify-content: center; z-index: 10;
+        .cell {
+            width: 35px;
+            height: 35px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.1s;
         }
+
+        .cell:hover {
+            border-color: var(--neon-pink);
+            background: #111;
+        }
+
+        /* --- 4. OVERLAYS & SCREENS --- */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
         .hidden { display: none !important; }
 
         .btn {
-            padding: 8px 16px; margin: 5px; background: none;
-            border: 1px solid var(--neon-blue); color: var(--neon-blue);
-            font-family: 'Syncopate'; font-size: 0.6rem; cursor: pointer;
+            background: none;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 12px 30px;
+            margin: 10px;
+            font-family: 'Syncopate';
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.3s;
+            letter-spacing: 2px;
         }
-        .btn:hover { background: var(--neon-blue); color: #000; }
-        .btn-danger { border-color: var(--danger); color: var(--danger); }
 
-        /* --- FOOTER --- */
+        .btn:hover {
+            background: var(--neon-blue);
+            color: #000;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .btn-danger {
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 0 20px var(--danger);
+        }
+
+        /* --- 5. SYSTEM TERMINAL --- */
+        #system-terminal {
+            grid-column: 1 / 3;
+            background: #000;
+            border: 1px solid #111;
+            padding: 10px;
+            font-size: 0.75rem;
+            color: var(--neon-green);
+            overflow-y: auto;
+            border-left: 3px solid var(--neon-blue);
+        }
+
+        .log-entry { margin-bottom: 2px; border-bottom: 1px solid #050505; }
+        .log-time { color: #444; margin-right: 10px; }
+
+        /* --- 6. FOOTER --- */
         #system-footer {
-            background: #000; padding: 8px; border-top: 1px solid #222;
-            text-align: center; font-size: 0.7rem; color: #444;
+            background: #000;
+            padding: 10px 20px;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #555;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 900px) {
+            .master-container { grid-template-columns: 1fr; overflow-y: auto; }
+            #system-terminal { grid-column: 1; height: 150px; }
         }
     </style>
 </head>
@@ -96,151 +221,318 @@
 
 <div id="trademark-header">KAVISHFORTECH ARCHITECT</div>
 
-<div class="hub-container">
-    <div class="game-card">
-        <div class="game-header">
-            <span>SNAKE_V5</span>
-            <span>FPS: <span id="snk-fps">0</span> | SCORE: <span id="snk-score">0</span></span>
-        </div>
-        <div class="canvas-area">
-            <canvas id="snakeCanvas" width="260" height="260"></canvas>
-            <div id="snk-start" class="overlay">
-                <button class="btn" onclick="Snake.init()">START SNAKE</button>
+<div class="master-container">
+    
+    <div class="module" id="snake-module">
+        <div class="module-header">
+            <span class="module-title">SNAKE_PROCESS.EXE</span>
+            <div class="hud-stats">
+                SCORE: <span id="snk-score">0</span> | FPS: <span id="snk-fps">0</span>
             </div>
-            <div id="snk-dead" class="overlay hidden">
-                <h3 style="color:var(--danger); font-size:0.7rem;">SNAKE_CRASHED</h3>
-                <button class="btn" onclick="Snake.init()">RESTART</button>
-                <button class="btn btn-danger" onclick="Snake.quit()">QUIT</button>
+        </div>
+        <div class="game-viewport">
+            <canvas id="snakeCanvas" width="280" height="280"></canvas>
+            
+            <div id="snk-start-screen" class="overlay">
+                <button class="btn" onclick="SnakeEngine.boot()">START_INITIALIZATION</button>
+            </div>
+
+            <div id="snk-death-screen" class="overlay hidden">
+                <h2 style="color:var(--danger); font-family:'Syncopate'; margin-bottom:20px;">SYSTEM_CRASH</h2>
+                <button class="btn" onclick="SnakeEngine.boot()">RESTART_CORE</button>
+                <button class="btn btn-danger" onclick="SnakeEngine.shutdown()">QUIT_MODULE</button>
             </div>
         </div>
     </div>
 
-    <div class="game-card">
-        <div class="game-header">
-            <span>MINES_V5</span>
-            <span>BOMBS: 10 | SCORE: <span id="mne-score">0</span></span>
-        </div>
-        <div class="canvas-area" style="display:flex; align-items:center;">
-            <div id="mine-grid"></div>
-            <div id="mne-start" class="overlay">
-                <button class="btn" onclick="Mines.init()">START MINES</button>
+    <div class="module" id="mines-module">
+        <div class="module-header">
+            <span class="module-title">MINES_SWEEPER.LOG</span>
+            <div class="hud-stats">
+                CLEARED: <span id="mne-cleared">0</span>%
             </div>
-            <div id="mne-dead" class="overlay hidden">
-                <h3 id="mne-status" style="color:var(--danger); font-size:0.7rem;">DETONATED</h3>
-                <button class="btn" onclick="Mines.init()">RESTART</button>
-                <button class="btn btn-danger" onclick="Mines.quit()">QUIT</button>
+        </div>
+        <div class="game-viewport">
+            <div id="mine-grid"></div>
+
+            <div id="mne-start-screen" class="overlay">
+                <button class="btn" onclick="MinesEngine.boot()">ACCESS_GRID</button>
+            </div>
+
+            <div id="mne-death-screen" class="overlay hidden">
+                <h2 id="mne-msg" style="color:var(--danger); font-family:'Syncopate'; margin-bottom:20px;">DETONATED</h2>
+                <button class="btn" onclick="MinesEngine.boot()">REGENERATE</button>
+                <button class="btn btn-danger" onclick="MinesEngine.shutdown()">DISCONNECT</button>
             </div>
         </div>
     </div>
+
+    <div id="system-terminal">
+        <div id="terminal-out"></div>
+    </div>
+
 </div>
 
-<div id="system-footer">INITIALIZING SYSTEM DETECTION...</div>
+<div id="system-footer">
+    <span id="sys-detect">DETECTING HARDWARE...</span>
+    <span id="sys-clock">REFRESH_RATE: ---</span>
+    <span style="color:var(--neon-pink)">ARCHITECT HUB V6.0</span>
+</div>
 
 <script>
-let isDesktop = !(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
+/**
+ * ARCHITECT HUB SCRIPTING ENGINE
+ * ----------------------------------------------------------------
+ */
 
-/* --- SYSTEM DETECTION --- */
-const footer = document.getElementById('system-footer');
-const sys = isDesktop ? "DESKTOP_STATION" : "MOBILE_UNIT";
-footer.innerText = `SYSTEM_ID: ${sys} | RES: ${innerWidth}x${innerHeight} | FRIDAY_BUILD`;
-
-/* --- SNAKE ENGINE --- */
-const snkCanvas = document.getElementById('snakeCanvas');
-const sCtx = snkCanvas.getContext('2d');
-const Snake = {
-    active: false, body: [], dir: {x:1, y:0}, food: {x:5,y:5}, score: 0,
-    init() {
-        this.body = [{x:10, y:10}]; this.dir = {x:1, y:0}; this.score = 0;
-        this.active = true; this.spawnFood();
-        document.getElementById('snk-score').innerText = "0";
-        document.getElementById('snk-start').classList.add('hidden');
-        document.getElementById('snk-dead').classList.add('hidden');
-        this.loop();
-    },
-    spawnFood() { this.food = { x: Math.floor(Math.random()*26), y: Math.floor(Math.random()*26) }; },
-    quit() { this.active = false; document.getElementById('snk-dead').classList.add('hidden'); document.getElementById('snk-start').classList.remove('hidden'); sCtx.clearRect(0,0,260,260); },
-    die() { this.active = false; document.getElementById('snk-dead').classList.remove('hidden'); },
-    update() {
-        let head = { x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y };
-        if(head.x<0||head.x>25||head.y<0||head.y>25) return this.die();
-        for(let p of this.body) if(head.x===p.x && head.y===p.y) return this.die();
-        this.body.unshift(head);
-        if(head.x===this.food.x && head.y===this.food.y) { this.score+=10; document.getElementById('snk-score').innerText=this.score; this.spawnFood(); }
-        else this.body.pop();
-    },
-    draw() {
-        sCtx.fillStyle="#000"; sCtx.fillRect(0,0,260,260);
-        sCtx.fillStyle="#0ff"; this.body.forEach(p=>sCtx.fillRect(p.x*10, p.y*10, 9, 9));
-        sCtx.fillStyle="#f0f"; sCtx.fillRect(this.food.x*10, this.food.y*10, 9, 9);
-    },
-    loop() {
-        if(!this.active) return;
-        this.update(); this.draw();
-        setTimeout(() => requestAnimationFrame(() => this.loop()), 100);
-        document.getElementById('snk-fps').innerText = "10";
+/* --- 1. UTILITIES --- */
+const Terminal = {
+    el: document.getElementById('terminal-out'),
+    log(msg, type = 'INFO') {
+        const line = document.createElement('div');
+        line.className = 'log-entry';
+        const ts = new Date().toLocaleTimeString();
+        const color = type === 'ERR' ? 'red' : (type === 'SYS' ? 'var(--neon-blue)' : 'var(--neon-green)');
+        line.innerHTML = `<span class="log-time">[${ts}]</span> <span style="color:${color}">[${type}]</span> ${msg}`;
+        this.el.prepend(line);
+        if(this.el.children.length > 30) this.el.lastChild.remove();
     }
 };
 
-/* --- MINESWEEPER ENGINE --- */
-const Mines = {
-    grid: [], score: 0, active: false,
+const Device = {
+    isDesktop: !(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)),
     init() {
-        this.active = true; this.score = 0;
-        document.getElementById('mne-score').innerText = "0";
-        document.getElementById('mne-start').classList.add('hidden');
-        document.getElementById('mne-dead').classList.add('hidden');
-        this.render();
+        const info = this.isDesktop ? "DESKTOP_STATION" : "MOBILE_UNIT";
+        document.getElementById('sys-detect').innerText = `DEVICE: ${info} | OS: ${navigator.platform}`;
+        Terminal.log(`Device Scanning Complete: ${info}`, 'SYS');
+    }
+};
+
+/* --- 2. NEON SNAKE ENGINE --- */
+const SnakeEngine = {
+    canvas: document.getElementById('snakeCanvas'),
+    ctx: document.getElementById('snakeCanvas').getContext('2d'),
+    active: false,
+    body: [],
+    dir: {x: 1, y: 0},
+    food: {x: 5, y: 5},
+    score: 0,
+    fps: 10,
+    timer: null,
+
+    boot() {
+        Terminal.log("Initializing Snake Core...", "SYS");
+        this.active = true;
+        this.score = 0;
+        this.body = [{x: 10, y: 10}, {x: 9, y: 10}, {x: 8, y: 10}];
+        this.dir = {x: 1, y: 0};
+        this.spawnFood();
+        
+        document.getElementById('snk-score').innerText = "0";
+        document.getElementById('snk-start-screen').classList.add('hidden');
+        document.getElementById('snk-death-screen').classList.add('hidden');
+        
+        if(this.timer) clearInterval(this.timer);
+        this.timer = setInterval(() => this.tick(), 1000 / this.fps);
+        document.getElementById('snk-fps').innerText = this.fps;
     },
-    quit() { document.getElementById('mne-dead').classList.add('hidden'); document.getElementById('mne-start').classList.remove('hidden'); document.getElementById('mine-grid').innerHTML=''; },
-    die(win) {
+
+    spawnFood() {
+        this.food = {
+            x: Math.floor(Math.random() * 28),
+            y: Math.floor(Math.random() * 28)
+        };
+    },
+
+    shutdown() {
         this.active = false;
-        const status = document.getElementById('mne-status');
-        status.innerText = win ? "GRID_CLEARED" : "DETONATED";
-        status.style.color = win ? "var(--neon-blue)" : "var(--danger)";
-        document.getElementById('mne-dead').classList.remove('hidden');
+        clearInterval(this.timer);
+        document.getElementById('snk-death-screen').classList.add('hidden');
+        document.getElementById('snk-start-screen').classList.remove('hidden');
+        this.ctx.clearRect(0,0,280,280);
+        Terminal.log("Snake Module Shutdown.", "ERR");
     },
-    render() {
+
+    die() {
+        this.active = false;
+        clearInterval(this.timer);
+        document.getElementById('snk-death-screen').classList.remove('hidden');
+        Terminal.log(`Snake Process Terminated. Score: ${this.score}`, "ERR");
+    },
+
+    tick() {
+        if(!this.active) return;
+        
+        let head = {x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y};
+
+        // Collision: Walls
+        if(head.x < 0 || head.x >= 28 || head.y < 0 || head.y >= 28) return this.die();
+
+        // Collision: Self
+        for(let part of this.body) {
+            if(head.x === part.x && head.y === part.y) return this.die();
+        }
+
+        this.body.unshift(head);
+
+        // Collision: Food
+        if(head.x === this.food.x && head.y === this.food.y) {
+            this.score += 10;
+            document.getElementById('snk-score').innerText = this.score;
+            Terminal.log(`Data Packet Captured. Score: ${this.score}`);
+            this.spawnFood();
+        } else {
+            this.body.pop();
+        }
+
+        this.draw();
+    },
+
+    draw() {
+        this.ctx.fillStyle = "#000";
+        this.ctx.fillRect(0,0,280,280);
+        
+        // Grid lines (Architect aesthetic)
+        this.ctx.strokeStyle = "#050510";
+        for(let i=0; i<280; i+=10) {
+            this.ctx.beginPath(); this.ctx.moveTo(i,0); this.ctx.lineTo(i,280); this.ctx.stroke();
+            this.ctx.beginPath(); this.ctx.moveTo(0,i); this.ctx.lineTo(280,i); this.ctx.stroke();
+        }
+
+        // Snake Body
+        this.ctx.fillStyle = "var(--neon-blue)";
+        this.body.forEach((p, i) => {
+            this.ctx.globalAlpha = i === 0 ? 1 : 0.6;
+            this.ctx.fillRect(p.x * 10, p.y * 10, 9, 9);
+        });
+
+        // Food
+        this.ctx.globalAlpha = 1;
+        this.ctx.fillStyle = "var(--neon-pink)";
+        this.ctx.shadowBlur = 10;
+        this.ctx.shadowColor = "var(--neon-pink)";
+        this.ctx.fillRect(this.food.x * 10, this.food.y * 10, 9, 9);
+        this.ctx.shadowBlur = 0;
+    }
+};
+
+/* --- 3. LOGIC MINES ENGINE --- */
+const MinesEngine = {
+    active: false,
+    gridSize: 8,
+    cells: [],
+    bombs: [],
+    clearedCount: 0,
+
+    boot() {
+        Terminal.log("Accessing Minesweeper Grid...", "SYS");
+        this.active = true;
+        this.clearedCount = 0;
+        document.getElementById('mne-cleared').innerText = "0";
+        document.getElementById('mne-start-screen').classList.add('hidden');
+        document.getElementById('mne-death-screen').classList.add('hidden');
+        this.generateGrid();
+    },
+
+    generateGrid() {
         const gridEl = document.getElementById('mine-grid');
         gridEl.innerHTML = '';
+        this.cells = [];
+        this.bombs = Array.from({length: 64}, () => Math.random() < 0.15); // 15% bomb density
+
         for(let i=0; i<64; i++) {
             const c = document.createElement('div');
             c.className = 'cell';
-            c.onclick = () => {
-                if(!this.active) return;
-                if(Math.random() > 0.88) {
-                    c.innerHTML = '💣'; c.style.background = 'red'; this.die(false);
-                } else {
-                    if(c.innerHTML === '') {
-                        c.innerHTML = Math.floor(Math.random()*3);
-                        c.style.background = '#050505'; this.score += 5;
-                        document.getElementById('mne-score').innerText = this.score;
-                        if(this.score >= 150) this.die(true);
-                    }
-                }
-            };
+            c.dataset.index = i;
+            c.onclick = () => this.reveal(i);
             gridEl.appendChild(c);
+            this.cells.push(c);
         }
+    },
+
+    reveal(idx) {
+        if(!this.active) return;
+        const cell = this.cells[idx];
+        if(cell.classList.contains('revealed')) return;
+
+        if(this.bombs[idx]) {
+            cell.innerHTML = '💣';
+            cell.style.background = 'var(--danger)';
+            cell.style.color = '#fff';
+            this.die(false);
+        } else {
+            cell.classList.add('revealed');
+            cell.style.background = '#050505';
+            cell.style.color = '#555';
+            cell.innerHTML = Math.floor(Math.random() * 4);
+            this.clearedCount++;
+            let percent = Math.floor((this.clearedCount / 54) * 100);
+            document.getElementById('mne-cleared').innerText = percent;
+            
+            if(this.clearedCount >= 54) this.die(true);
+        }
+    },
+
+    shutdown() {
+        this.active = false;
+        document.getElementById('mne-death-screen').classList.add('hidden');
+        document.getElementById('mne-start-screen').classList.remove('hidden');
+        document.getElementById('mine-grid').innerHTML = '';
+        Terminal.log("Mines Module Disconnected.", "ERR");
+    },
+
+    die(win) {
+        this.active = false;
+        const screen = document.getElementById('mne-death-screen');
+        const msg = document.getElementById('mne-msg');
+        
+        if(win) {
+            msg.innerText = "GRID_CLEARED";
+            msg.style.color = "var(--neon-green)";
+            Terminal.log("Minesweeper Success: Sector Secured", "SYS");
+        } else {
+            msg.innerText = "DETONATED";
+            msg.style.color = "var(--danger)";
+            Terminal.log("Minesweeper Failure: Mine Detonated", "ERR");
+        }
+        screen.classList.remove('hidden');
     }
 };
 
-/* --- CONTROLS --- */
-window.addEventListener('keydown', e => {
-    if(!Snake.active) return;
-    const key = e.key;
-    // Arrow Controls (Universal)
-    if(key === "ArrowUp" && Snake.dir.y === 0) Snake.dir = {x:0, y:-1};
-    if(key === "ArrowDown" && Snake.dir.y === 0) Snake.dir = {x:0, y:1};
-    if(key === "ArrowLeft" && Snake.dir.x === 0) Snake.dir = {x:-1, y:0};
-    if(key === "ArrowRight" && Snake.dir.x === 0) Snake.dir = {x:1, y:0};
+/* --- 4. CONTROL HANDLER --- */
+window.addEventListener('keydown', (e) => {
+    if(!SnakeEngine.active) return;
     
-    // WASD (Desktop Only)
-    if(isDesktop) {
-        if(key.toLowerCase() === "w" && Snake.dir.y === 0) Snake.dir = {x:0, y:-1};
-        if(key.toLowerCase() === "s" && Snake.dir.y === 0) Snake.dir = {x:0, y:1};
-        if(key.toLowerCase() === "a" && Snake.dir.x === 0) Snake.dir = {x:-1, y:0};
-        if(key.toLowerCase() === "d" && Snake.dir.x === 0) Snake.dir = {x:1, y:0};
+    const key = e.key;
+    
+    // UNIVERSAL ARROW CONTROLS
+    if(key === "ArrowUp" && SnakeEngine.dir.y === 0) SnakeEngine.dir = {x: 0, y: -1};
+    if(key === "ArrowDown" && SnakeEngine.dir.y === 0) SnakeEngine.dir = {x: 0, y: 1};
+    if(key === "ArrowLeft" && SnakeEngine.dir.x === 0) SnakeEngine.dir = {x: -1, y: 0};
+    if(key === "ArrowRight" && SnakeEngine.dir.x === 0) SnakeEngine.dir = {x: 1, y: 0};
+
+    // DESKTOP ONLY: WASD
+    if(Device.isDesktop) {
+        const k = key.toLowerCase();
+        if(k === "w" && SnakeEngine.dir.y === 0) SnakeEngine.dir = {x: 0, y: -1};
+        if(k === "s" && SnakeEngine.dir.y === 0) SnakeEngine.dir = {x: 0, y: 1};
+        if(k === "a" && SnakeEngine.dir.x === 0) SnakeEngine.dir = {x: -1, y: 0};
+        if(k === "d" && SnakeEngine.dir.x === 0) SnakeEngine.dir = {x: 1, y: 0};
     }
 });
+
+/* --- 5. INITIALIZATION --- */
+window.onload = () => {
+    Device.init();
+    Terminal.log("KAVISH ARCHITECT HUB V6.0 ONLINE", "SYS");
+    Terminal.log("Awaiting user command...", "INFO");
+    
+    // Performance monitor
+    setInterval(() => {
+        document.getElementById('sys-clock').innerText = `CLOCK: ${new Date().toLocaleTimeString().split(' ')[0]}`;
+    }, 1000);
+};
+
 </script>
 </body>
 </html>
