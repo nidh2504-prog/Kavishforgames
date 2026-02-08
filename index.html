@@ -1,295 +1,453 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>KAVISH ARCHITECT | HUB</title>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Share+Tech+Mono&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KAVISH ARCHITECT | HUB V4.0</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Share+Tech+Mono&display=swap');
 
-:root {
-    --neon-blue:#00f3ff;
-    --neon-pink:#bc13fe;
-    --bg-dark:#020208;
-    --danger: #ff2e2e;
-}
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-pink: #bc13fe;
+            --neon-green: #39ff14;
+            --danger: #ff2e2e;
+            --bg-dark: #020205;
+            --panel-bg: rgba(10, 10, 25, 0.95);
+        }
 
-* { box-sizing:border-box; user-select:none; touch-action: none; }
+        * {
+            box-sizing: border-box;
+            user-select: none;
+            touch-action: none;
+        }
 
-body {
-    margin:0; background:var(--bg-dark);
-    font-family:'Share Tech Mono', monospace;
-    overflow:hidden; height: 100vh;
-    display: flex; flex-direction: column; color: white;
-}
+        body {
+            margin: 0;
+            padding: 0;
+            background: var(--bg-dark);
+            font-family: 'Share Tech Mono', monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: #fff;
+        }
 
-/* --- RGB TRADEMARK HEADER --- */
-#trademark-header {
-    width: 100%; padding: 15px; text-align: center;
-    font-family: 'Syncopate'; font-size: 1.2rem; letter-spacing: 5px;
-    border-bottom: 2px solid #fff;
-    animation: rgbShift 3s linear infinite;
-    background: #000;
-}
+        /* --- RGB TRADEMARK HEADER --- */
+        #trademark-header {
+            width: 100%;
+            padding: 15px 0;
+            text-align: center;
+            font-family: 'Syncopate';
+            font-size: 1.4rem;
+            letter-spacing: 8px;
+            border-bottom: 3px solid #fff;
+            background: #000;
+            animation: rgbShift 4s linear infinite;
+            z-index: 100;
+        }
 
-@keyframes rgbShift {
-    0% { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 15px #ff0000; }
-    33% { border-color: #00ff00; color: #00ff00; box-shadow: 0 0 15px #00ff00; }
-    66% { border-color: #0000ff; color: #0000ff; box-shadow: 0 0 15px #0000ff; }
-    100% { border-color: #ff0000; color: #ff0000; box-shadow: 0 0 15px #ff0000; }
-}
+        @keyframes rgbShift {
+            0% { border-color: #ff0000; color: #ff0000; box-shadow: 0 4px 15px #ff0000; }
+            33% { border-color: #00ff00; color: #00ff00; box-shadow: 0 4px 15px #00ff00; }
+            66% { border-color: #0000ff; color: #0000ff; box-shadow: 0 4px 15px #0000ff; }
+            100% { border-color: #ff0000; color: #ff0000; box-shadow: 0 4px 15px #ff0000; }
+        }
 
-/* --- GAME HUB CONTENT --- */
-.hub-container {
-    flex-grow: 1;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 20px;
-    gap: 20px;
-    flex-wrap: wrap;
-}
+        /* --- MAIN HUB LAYOUT --- */
+        .hub-grid {
+            display: grid;
+            grid-template-columns: 320px 1fr 320px;
+            flex-grow: 1;
+            gap: 15px;
+            padding: 20px;
+            overflow: hidden;
+        }
 
-.game-card {
-    background: #08080c;
-    border: 1px solid #1a1a2e;
-    padding: 20px;
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-    position: relative;
-}
+        .module-box {
+            background: var(--panel-bg);
+            border: 1px solid #1a1a35;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
 
-.game-title { 
-    font-family: 'Syncopate'; 
-    font-size: 0.8rem; 
-    color: #888; 
-    margin-bottom: 15px; 
-    letter-spacing: 2px;
-}
+        .module-label {
+            padding: 10px;
+            background: #000;
+            font-family: 'Syncopate';
+            font-size: 0.7rem;
+            color: #555;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+        }
 
-/* --- SNAKE HUD & SCREENS --- */
-.game-hud {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.7rem;
-    color: var(--neon-blue);
-    margin-bottom: 5px;
-}
+        /* --- CENTER TERMINAL --- */
+        #central-terminal {
+            display: flex;
+            flex-direction: column;
+            background: #000;
+            border: 1px solid #111;
+        }
 
-.canvas-wrapper {
-    position: relative;
-    width: 240px;
-    height: 240px;
-}
+        #log-output {
+            flex-grow: 1;
+            padding: 15px;
+            font-size: 0.8rem;
+            color: var(--neon-green);
+            overflow-y: auto;
+            background: linear-gradient(rgba(0,20,0,0.1) 50%, rgba(0,0,0,0.1) 50%);
+            background-size: 100% 4px;
+        }
 
-#snakeCanvas { background: #000; border: 1px solid #333; }
+        .log-line { margin-bottom: 4px; border-left: 2px solid #222; padding-left: 8px; }
+        .log-ts { color: #444; margin-right: 10px; }
 
-.overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 10;
-}
+        /* --- SNAKE GAME --- */
+        .canvas-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
 
-.hidden { display: none !important; }
+        canvas {
+            border: 2px solid #222;
+            background: #000;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
+        }
 
-/* --- BUTTONS --- */
-.btn {
-    padding: 8px 16px;
-    margin: 5px;
-    background: none;
-    border: 1px solid var(--neon-blue);
-    color: var(--neon-blue);
-    font-family: 'Syncopate';
-    font-size: 0.7rem;
-    cursor: pointer;
-    transition: 0.3s;
-}
-.btn:hover { background: var(--neon-blue); color: #000; }
-.btn-danger { border-color: var(--danger); color: var(--danger); }
-.btn-danger:hover { background: var(--danger); color: #fff; }
+        .hud-row {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            color: var(--neon-blue);
+            font-size: 0.8rem;
+        }
 
-/* --- MINESWEEPER --- */
-#minefield { display: grid; grid-template-columns: repeat(8, 30px); gap: 3px; }
-.cell { 
-    width: 30px; height: 30px; background: #1a1a1a; 
-    border-radius: 3px; cursor: pointer; text-align: center; 
-    font-size: 0.9rem; line-height: 30px; transition: 0.2s;
-}
-.cell:hover { background: #222; border: 1px solid var(--neon-blue); }
+        /* --- MINESWEEPER --- */
+        #mine-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 32px);
+            gap: 4px;
+            margin: auto;
+        }
 
-/* --- SYSTEM DETECTION FOOTER --- */
-#system-footer {
-    background: #000; 
-    padding: 8px; 
-    border-top: 1px solid #222;
-    text-align: center; 
-    font-size: 0.7rem; 
-    color: #555; 
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
+        .cell {
+            width: 32px;
+            height: 32px;
+            background: #111;
+            border: 1px solid #222;
+            text-align: center;
+            line-height: 32px;
+            cursor: pointer;
+            font-weight: bold;
+        }
 
-@media (max-width: 600px) {
-    .hub-container { flex-direction: column; overflow-y: auto; }
-}
-</style>
+        .cell:hover { background: #1a1a1a; border-color: var(--neon-pink); }
+
+        /* --- OVERLAYS --- */
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .hidden { display: none !important; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            padding: 12px 24px;
+            margin: 8px;
+            background: none;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            font-family: 'Syncopate';
+            font-size: 0.7rem;
+            cursor: pointer;
+            letter-spacing: 2px;
+        }
+
+        .btn:active { background: var(--neon-blue); color: #000; }
+        .btn-danger { border-color: var(--danger); color: var(--danger); }
+
+        /* --- SYSTEM FOOTER --- */
+        #system-footer {
+            background: #000;
+            padding: 10px;
+            border-top: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: #444;
+            letter-spacing: 2px;
+        }
+
+        @media (max-width: 1000px) {
+            .hub-grid { grid-template-columns: 1fr; overflow-y: auto; }
+            #central-terminal { height: 300px; }
+        }
+    </style>
 </head>
 <body>
 
 <div id="trademark-header">KAVISHFORTECH ARCHITECT</div>
 
-<div class="hub-container">
-    <div class="game-card">
-        <div class="game-title">NEON_SNAKE.EXE</div>
+<div class="hub-grid">
+    
+    <div class="module-box">
+        <div class="module-label">
+            <span>NEON_SNAKE.EXE</span>
+            <span id="snk-fps">FPS: 0</span>
+        </div>
         
-        <div class="game-hud">
-            <span>SCORE: <span id="snakeScore">0</span></span>
-            <span>FPS: <span id="snakeFPS">0</span></span>
+        <div class="hud-row">
+            <span>SCORE: <span id="snk-score">0</span></span>
+            <span>HIGH: <span id="snk-high">0</span></span>
         </div>
 
-        <div class="canvas-wrapper">
-            <canvas id="snakeCanvas" width="240" height="240"></canvas>
+        <div class="canvas-container" style="position:relative;">
+            <canvas id="snakeCanvas" width="260" height="260"></canvas>
             
-            <div id="snakeStartScreen" class="overlay">
-                <button class="btn" onclick="startSnake()">INITIALIZE START</button>
+            <div id="snk-start-screen" class="overlay">
+                <button class="btn" onclick="Snake.init()">START SYSTEM</button>
             </div>
 
-            <div id="snakeGameOverScreen" class="overlay hidden">
-                <h2 style="color:var(--danger); font-family:'Syncopate'; font-size:0.8rem;">CORE_CRITICAL: FAILED</h2>
-                <button class="btn" onclick="startSnake()">RESTART</button>
-                <button class="btn btn-danger" onclick="abortSnake()">ABORT</button>
+            <div id="snk-death-screen" class="overlay hidden">
+                <h2 style="color:var(--danger); font-family:'Syncopate'; font-size:0.9rem;">CORE_CRASHED</h2>
+                <button class="btn" onclick="Snake.init()">RESTART</button>
+                <button class="btn btn-danger" onclick="Snake.abort()">ABORT</button>
             </div>
         </div>
-        
-        <p style="font-size: 0.6rem; color: #444; margin-top: 10px;">ARROWS OR SWIPE TO MOVE</p>
+        <p style="text-align:center; font-size:0.6rem; color:#444;">W-A-S-D OR SWIPE TO NAVIGATE</p>
     </div>
 
-    <div class="game-card">
-        <div class="game-title">MINE_SWEEPER.LOGIC</div>
-        <div id="minefield"></div>
-        <button onclick="resetMines()" style="margin-top:15px; background:none; border:1px solid #333; color:#666; font-family:'Share Tech Mono'; cursor:pointer; padding: 5px 10px;">RELOAD GRID</button>
+    <div class="module-box" id="central-terminal">
+        <div class="module-label">ARCHITECT_CONSOLE_V4.0</div>
+        <div id="log-output"></div>
     </div>
+
+    <div class="module-box">
+        <div class="module-label">LOGIC_MINES.DAT</div>
+        <div style="flex-grow:1; display:flex; flex-direction:column; justify-content:center;">
+            <div id="mine-grid"></div>
+        </div>
+        <div style="padding:15px; text-align:center;">
+            <button class="btn" style="padding:6px 12px; font-size:0.5rem;" onclick="Mines.reset()">RELOAD_GRID</button>
+        </div>
+    </div>
+
 </div>
 
-<div id="system-footer">INITIALIZING DETECTION...</div>
+<div id="system-footer">
+    <span id="sys-unit">SCANNING HARDWARE...</span>
+    <span id="sys-res">RESOLUTION: ---</span>
+    <span style="color:var(--neon-pink)">KAVISHFORTECH ARCHITECT © 2026</span>
+</div>
 
 <script>
-/* --- 1. SYSTEM DETECTION --- */
+/* ================================================================
+   1. SYSTEM TERMINAL
+   ================================================================ */
+const Logger = {
+    el: document.getElementById('log-output'),
+    log(msg, type = 'INFO') {
+        const line = document.createElement('div');
+        line.className = 'log-line';
+        const ts = new Date().toLocaleTimeString().split(' ')[0];
+        const color = type === 'ERR' ? 'red' : (type === 'SYS' ? '#00f3ff' : '#39ff14');
+        line.innerHTML = `<span class="log-ts">[${ts}]</span><span style="color:${color}">[${type}]</span> ${msg}`;
+        this.el.prepend(line);
+        if(this.el.children.length > 40) this.el.lastChild.remove();
+    }
+};
+
+/* ================================================================
+   2. SYSTEM DETECTION
+   ================================================================ */
 function detectSystem() {
     const ua = navigator.userAgent;
-    let device = "DESKTOP_STATION";
-    if(/Android/i.test(ua)) device = "ANDROID_UNIT";
-    else if(/iPhone|iPad|iPod/i.test(ua)) device = "iOS_UNIT";
+    let unit = "DESKTOP_STATION";
+    if(/Android/i.test(ua)) unit = "ANDROID_MOBILE";
+    else if(/iPhone|iPad|iPod/i.test(ua)) unit = "IOS_MOBILE";
     
-    document.getElementById("system-footer").innerText = 
-        `DEVICE_SCAN: ${device} | RESOLUTION: ${window.innerWidth}x${window.innerHeight} | STATUS: ONLINE`;
-}
-detectSystem();
-
-/* --- 2. SNAKE LOGIC --- */
-const snk = document.getElementById("snakeCanvas").getContext("2d");
-let sBody, sDir, sFood, snakeActive = false, snakeScore = 0;
-let lastFrameTime = 0;
-
-function startSnake() {
-    sBody = [{x:10,y:10}];
-    sDir = {x:1,y:0};
-    sFood = {x:5,y:5};
-    snakeScore = 0;
-    snakeActive = true;
-    document.getElementById('snakeScore').innerText = "0";
-    document.getElementById('snakeStartScreen').classList.add('hidden');
-    document.getElementById('snakeGameOverScreen').classList.add('hidden');
+    document.getElementById('sys-unit').innerText = `UNIT: ${unit}`;
+    document.getElementById('sys-res').innerText = `RES: ${window.innerWidth}x${window.innerHeight}`;
+    Logger.log(`System initialized. Unit: ${unit}`, 'SYS');
 }
 
-function abortSnake() {
-    snakeActive = false;
-    document.getElementById('snakeGameOverScreen').classList.add('hidden');
-    document.getElementById('snakeStartScreen').classList.remove('hidden');
-    snk.fillStyle = "#000";
-    snk.fillRect(0,0,240,240);
-}
+/* ================================================================
+   3. NEON SNAKE ENGINE
+   ================================================================ */
+const snkCanvas = document.getElementById('snakeCanvas');
+const sCtx = snkCanvas.getContext('2d');
 
-function stepSnake(currentTime) {
-    // Calculate FPS
-    const deltaTime = currentTime - lastFrameTime;
-    lastFrameTime = currentTime;
-    if(deltaTime > 0) document.getElementById('snakeFPS').innerText = Math.round(1000 / 100); // interval is 100ms
+const Snake = {
+    active: false,
+    body: [],
+    dir: { x: 1, y: 0 },
+    food: { x: 5, y: 5 },
+    score: 0,
+    highScore: 0,
+    lastTime: 0,
 
-    if (!snakeActive) return;
+    init() {
+        Logger.log("Snake subsystem starting...", "SYS");
+        this.body = [{x: 10, y: 10}];
+        this.dir = { x: 1, y: 0 };
+        this.score = 0;
+        this.active = true;
+        this.spawnFood();
+        document.getElementById('snk-score').innerText = "0";
+        document.getElementById('snk-start-screen').classList.add('hidden');
+        document.getElementById('snk-death-screen').classList.add('hidden');
+        requestAnimationFrame((t) => this.loop(t));
+    },
 
-    let head = {x: sBody[0].x + sDir.x, y: sBody[0].y + sDir.y};
+    abort() {
+        this.active = false;
+        Logger.log("Snake process manually aborted.", "ERR");
+        document.getElementById('snk-death-screen').classList.add('hidden');
+        document.getElementById('snk-start-screen').classList.remove('hidden');
+        sCtx.clearRect(0,0,260,260);
+    },
 
-    // Wall Wrap Logic
-    if(head.x < 0) head.x = 23; if(head.x > 23) head.x = 0;
-    if(head.y < 0) head.y = 23; if(head.y > 23) head.y = 0;
+    spawnFood() {
+        this.food = {
+            x: Math.floor(Math.random() * 26),
+            y: Math.floor(Math.random() * 26)
+        };
+    },
 
-    // Self Collision Detection
-    for (let i = 0; i < sBody.length; i++) {
-        if (head.x === sBody[i].x && head.y === sBody[i].y) {
-            snakeActive = false;
-            document.getElementById('snakeGameOverScreen').classList.remove('hidden');
-            return;
+    die() {
+        this.active = false;
+        Logger.log(`Snake collision detected. Final Score: ${this.score}`, "ERR");
+        if(this.score > this.highScore) {
+            this.highScore = this.score;
+            document.getElementById('snk-high').innerText = this.highScore;
+            Logger.log("New High Score achieved!", "SYS");
+        }
+        document.getElementById('snk-death-screen').classList.remove('hidden');
+    },
+
+    loop(t) {
+        if(!this.active) return;
+        
+        const delta = t - this.lastTime;
+        if(delta > 90) { // Approx 11 FPS
+            this.lastTime = t;
+            document.getElementById('snk-fps').innerText = `FPS: ${Math.round(1000/delta)}`;
+            this.update();
+            this.draw();
+        }
+        requestAnimationFrame((t) => this.loop(t));
+    },
+
+    update() {
+        let head = { x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y };
+
+        // Wall Warp
+        if(head.x < 0) head.x = 25; if(head.x > 25) head.x = 0;
+        if(head.y < 0) head.y = 25; if(head.y > 25) head.y = 0;
+
+        // Self Collision
+        for(let part of this.body) {
+            if(head.x === part.x && head.y === part.y) return this.die();
+        }
+
+        this.body.unshift(head);
+
+        if(head.x === this.food.x && head.y === this.food.y) {
+            this.score += 10;
+            document.getElementById('snk-score').innerText = this.score;
+            Logger.log(`Node consumed. Score: ${this.score}`, "INFO");
+            this.spawnFood();
+        } else {
+            this.body.pop();
+        }
+    },
+
+    draw() {
+        sCtx.fillStyle = "#000";
+        sCtx.fillRect(0,0,260,260);
+        
+        // Grid hint
+        sCtx.strokeStyle = "#050510";
+        for(let i=0; i<260; i+=10) {
+            sCtx.strokeRect(i,0,1,260);
+            sCtx.strokeRect(0,i,260,1);
+        }
+
+        sCtx.fillStyle = "#0ff";
+        this.body.forEach((p, i) => {
+            sCtx.globalAlpha = 1 - (i / this.body.length * 0.6);
+            sCtx.fillRect(p.x*10, p.y*10, 9, 9);
+        });
+        
+        sCtx.globalAlpha = 1;
+        sCtx.fillStyle = "#bc13fe";
+        sCtx.fillRect(this.food.x*10, this.food.y*10, 9, 9);
+    }
+};
+
+/* ================================================================
+   4. LOGIC MINES ENGINE
+   ================================================================ */
+const Mines = {
+    gridEl: document.getElementById('mine-grid'),
+    reset() {
+        Logger.log("Minesweeper grid refreshed.", "SYS");
+        this.gridEl.innerHTML = '';
+        for(let i=0; i<64; i++) {
+            const c = document.createElement('div');
+            c.className = 'cell';
+            c.onclick = () => {
+                if(Math.random() > 0.88) {
+                    c.innerHTML = '💣';
+                    c.style.background = '#400';
+                    c.style.color = 'red';
+                    Logger.log("Mine detonated. Sector lost.", "ERR");
+                } else {
+                    c.innerHTML = Math.floor(Math.random()*3);
+                    c.style.color = '#555';
+                    c.style.background = '#050505';
+                }
+            };
+            this.gridEl.appendChild(c);
         }
     }
+};
 
-    sBody.unshift(head);
-
-    // Food Logic
-    if(head.x === sFood.x && head.y === sFood.y) {
-        snakeScore += 10;
-        document.getElementById('snakeScore').innerText = snakeScore;
-        sFood = {x: Math.floor(Math.random()*24), y: Math.floor(Math.random()*24)};
-    } else {
-        sBody.pop();
-    }
-
-    // Drawing
-    snk.fillStyle = "#000"; snk.fillRect(0,0,240,240);
-    snk.fillStyle = "#0ff"; sBody.forEach(b => snk.fillRect(b.x*10, b.y*10, 9, 9));
-    snk.fillStyle = "#f0f"; snk.fillRect(sFood.x*10, sFood.y*10, 9, 9);
-}
-
-// Fixed game loop interval (10FPS)
-setInterval(() => {
-    stepSnake(performance.now());
-}, 100);
-
-window.addEventListener("keydown", e => {
-    if(!snakeActive) return;
-    if(e.key === "ArrowUp" && sDir.y === 0) { sDir = {x:0, y:-1}; }
-    if(e.key === "ArrowDown" && sDir.y === 0) { sDir = {x:0, y:1}; }
-    if(e.key === "ArrowLeft" && sDir.x === 0) { sDir = {x:-1, y:0}; }
-    if(e.key === "ArrowRight" && sDir.x === 0) { sDir = {x:1, y:0}; }
+/* ================================================================
+   5. INPUT HANDLING
+   ================================================================ */
+window.addEventListener('keydown', e => {
+    if(!Snake.active) return;
+    const key = e.key.toLowerCase();
+    if((key === 'w' || e.key === 'ArrowUp') && Snake.dir.y === 0) Snake.dir = {x:0, y:-1};
+    if((key === 's' || e.key === 'ArrowDown') && Snake.dir.y === 0) Snake.dir = {x:0, y:1};
+    if((key === 'a' || e.key === 'ArrowLeft') && Snake.dir.x === 0) Snake.dir = {x:-1, y:0};
+    if((key === 'd' || e.key === 'ArrowRight') && Snake.dir.x === 0) Snake.dir = {x:1, y:0};
 });
 
-/* --- 3. MINESWEEPER LOGIC --- */
-function resetMines() {
-    const field = document.getElementById("minefield");
-    field.innerHTML = '';
-    for(let i=0; i<64; i++) {
-        let c = document.createElement('div');
-        c.className = 'cell';
-        c.onclick = () => {
-            if(Math.random() > 0.85) { 
-                c.innerText = '💣'; c.style.background = '#400'; c.style.color = 'red';
-            } else { 
-                c.innerText = Math.floor(Math.random()*3); c.style.background = '#050505'; c.style.color = '#555';
-            }
-        };
-        field.appendChild(c);
-    }
-}
-resetMines();
+// Init on load
+window.onload = () => {
+    detectSystem();
+    Mines.reset();
+    Logger.log("Architect Hub Online. Ready for commands.", "INFO");
+};
 </script>
 </body>
 </html>
