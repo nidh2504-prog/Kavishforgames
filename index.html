@@ -2,367 +2,504 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KAVISH SHAH | THE ARCHITECT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAVISH | SYSTEM DETECTOR & LUDO</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@400;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=JetBrains+Mono:wght@500&display=swap');
 
         :root {
-            --neon-blue: #00f2ff;
+            --neon-blue: #00f3ff;
+            --neon-pink: #bc13fe;
             --neon-green: #39ff14;
-            --neon-pink: #ff00ea;
-            --neon-red: #ff3131;
-            --bg-black: #050508;
-            --panel-bg: rgba(12, 12, 20, 0.98);
+            --neon-red: #ff073a;
+            --neon-yellow: #fff200;
+            --bg: #050508;
+            --panel: rgba(10, 10, 15, 0.95);
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; touch-action: manipulation; }
 
         body {
+            margin: 0;
+            background: var(--bg);
+            color: white;
             font-family: 'JetBrains Mono', monospace;
-            background: var(--bg-black);
-            color: #fff;
-            overflow-x: hidden;
             min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        /* --- THE DYNAMIC COLOR BOX HEADER --- */
-        .header-section {
-            width: 100%;
-            padding: 40px 15px;
-            display: flex;
-            justify-content: center;
-            background: #000;
-            border-bottom: 2px solid var(--neon-blue);
-        }
-
-        .color-shift-box {
-            padding: 30px 40px;
-            border: 4px solid var(--neon-blue);
-            border-radius: 12px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.9);
-            animation: borderCycle 8s infinite alternate;
-            box-shadow: 0 0 25px rgba(0, 242, 255, 0.2);
-            width: 100%;
-            max-width: 650px;
-        }
-
-        @keyframes borderCycle {
-            0% { border-color: var(--neon-blue); box-shadow: 0 0 35px var(--neon-blue); }
-            50% { border-color: var(--neon-pink); box-shadow: 0 0 35px var(--neon-pink); }
-            100% { border-color: var(--neon-green); box-shadow: 0 0 35px var(--neon-green); }
-        }
-
-        .color-shift-box h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: clamp(1.8rem, 7vw, 3.8rem);
-            letter-spacing: -3px;
-            animation: textCycle 8s infinite alternate;
-        }
-
-        @keyframes textCycle {
-            0% { color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
-            50% { color: var(--neon-pink); text-shadow: 0 0 15px var(--neon-pink); }
-            100% { color: var(--neon-green); text-shadow: 0 0 15px var(--neon-green); }
-        }
-
-        /* --- LAYOUT ENGINE --- */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-            gap: 25px;
-            padding: 25px;
-            width: 100%;
-            max-width: 1200px;
-        }
-
-        .engine-card {
-            background: var(--panel-bg);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 20px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+        .terminal {
+            width: 90%;
+            max-width: 600px;
+            background: var(--panel);
+            border: 1px solid #1a1a2e;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(0, 243, 255, 0.1);
             position: relative;
+            margin: 20px auto;
         }
 
-        .card-label {
-            font-size: 0.9rem;
-            color: var(--neon-blue);
-            margin-bottom: 20px;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-        }
-
-        /* --- GAME VIEWPORTS --- */
-        .game-viewport {
-            position: relative;
-            width: 100%;
-            max-width: 320px;
-            aspect-ratio: 1/1;
-            background: #000;
-            border: 2px solid #1a1a1a;
-            border-radius: 8px;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        canvas { width: 100%; height: 100%; display: block; }
-
-        .score-panel {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 5px;
-            font-size: 1.1rem;
-        }
-
-        /* --- OVERLAY SYSTEM --- */
-        .death-overlay {
+        .terminal::before {
+            content: "";
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            backdrop-filter: blur(5px);
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), var(--neon-pink));
         }
 
-        .death-overlay h3 { color: var(--neon-red); font-size: 2rem; margin-bottom: 20px; font-family: 'Syncopate'; }
-
-        /* --- BUTTONS & CONTROLS --- */
-        .btn-row { display: flex; gap: 10px; width: 100%; margin-top: 10px; }
-        .btn-ui {
-            flex: 1; padding: 16px; background: transparent;
-            border: 2px solid var(--neon-blue); color: var(--neon-blue);
-            font-weight: 800; text-transform: uppercase; border-radius: 8px; cursor: pointer;
-            font-family: 'JetBrains Mono';
+        h1 {
+            font-family: 'Syncopate';
+            font-size: 1.4rem;
+            color: var(--neon-blue);
+            margin: 0 0 20px;
+            letter-spacing: 3px;
+            text-align: center;
         }
-        .btn-ui:active { background: var(--neon-blue); color: #000; }
-        .btn-abort { border-color: var(--neon-red); color: var(--neon-red); }
 
-        .joypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-        .btn-dir { width: 65px; height: 65px; background: #111; border: 2px solid var(--neon-blue); color: #fff; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 22px; }
+        .glitch {
+            color: var(--neon-pink);
+            font-weight: bold;
+            text-shadow: 0 0 10px var(--neon-pink);
+            animation: glitch 1.5s infinite;
+        }
 
-        /* --- MINESWEEPER GRID --- */
-        .mine-field {
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--neon-blue); }
+            20% { text-shadow: -2px 0 var(--neon-pink); }
+            40% { text-shadow: 2px 0 var(--neon-blue); }
+            60% { text-shadow: -2px 0 var(--neon-pink); }
+            80% { text-shadow: 2px 0 var(--neon-blue); }
+            100% { text-shadow: 0 0 10px var(--neon-pink); }
+        }
+
+        .info-grid {
             display: grid;
-            grid-template-columns: repeat(8, 1fr);
-            gap: 5px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+        }
+
+        .info-item {
+            border-left: 3px solid #222;
+            padding-left: 15px;
+            transition: 0.3s;
+        }
+
+        .info-item.active {
+            border-left-color: var(--neon-pink);
+        }
+
+        .label {
+            display: block;
+            font-size: 0.7rem;
+            color: #555;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-size: 1.1rem;
+            color: #eee;
+            letter-spacing: 1px;
+        }
+
+        #device-icon {
+            font-size: 4rem;
+            margin: 0 auto 20px;
+            display: block;
+            text-align: center;
+        }
+
+        /* Ludo Section */
+        #ludo-section {
+            display: none;
+            width: 90%;
+            max-width: 700px;
+            margin: 20px auto;
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .status {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: var(--neon-blue);
+        }
+
+        .dice-area {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #dice {
+            font-size: 4rem;
+            margin: 10px;
+            color: var(--neon-pink);
+            text-shadow: 0 0 15px var(--neon-pink);
+        }
+
+        .button-neon {
+            background: transparent;
+            border: 2px solid var(--neon-blue);
+            color: var(--neon-blue);
+            padding: 10px 25px;
+            font-size: 1rem;
+            margin: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button-neon:hover {
+            background: var(--neon-blue);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-blue);
+        }
+
+        .button-neon.abort { border-color: var(--neon-red); color: var(--neon-red); }
+        .button-neon.abort:hover { background: var(--neon-red); color: black; }
+
+        #board {
+            width: 100%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1;
+            margin: 20px auto;
+            background: #0a0a15;
+            border: 2px solid var(--neon-pink);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .path {
+            position: absolute;
             width: 100%;
             height: 100%;
-            padding: 10px;
+            background: repeating-linear-gradient(
+                45deg,
+                #111 0,
+                #111 10px,
+                #1a1a2e 10px,
+                #1a1a2e 20px
+            );
         }
 
-        .tile {
-            aspect-ratio: 1/1;
-            background: #111;
-            border: 1px solid #222;
-            border-radius: 4px;
+        .token {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            position: absolute;
+            border: 3px solid white;
+            box-shadow: 0 0 15px white;
+            transition: all 0.4s ease;
+        }
+
+        #token-red   { background: var(--neon-red);   box-shadow: 0 0 20px var(--neon-red); }
+        #token-green { background: var(--neon-green); box-shadow: 0 0 20px var(--neon-green); }
+
+        .home {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            cursor: pointer;
+            font-size: 1.4rem;
+            font-weight: bold;
+            box-shadow: inset 0 0 20px black;
         }
 
-        .sys-log { width: 90%; max-width: 1150px; background: #000; padding: 15px; margin-bottom: 30px; border-radius: 10px; height: 80px; overflow-y: auto; color: var(--neon-green); font-size: 0.75rem; border: 1px solid #111; }
+        #home-red   { bottom: 10px; left: 10px;  background: rgba(255,7,58,0.2);  color: var(--neon-red); }
+        #home-green { top: 10px;   right: 10px; background: rgba(57,255,20,0.2); color: var(--neon-green); }
+
+        .color-choice {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .color-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid white;
+            margin: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .color-btn.selected {
+            transform: scale(1.25);
+            box-shadow: 0 0 25px white;
+        }
+
+        #winner-screen {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(5,5,8,0.95);
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+        }
+
+        #winner-text {
+            font-size: 3rem;
+            margin: 20px;
+            text-align: center;
+            animation: glitch 2s infinite;
+        }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 1.1rem; }
+            #board { max-width: 380px; }
+            .token { width: 22px; height: 22px; }
+        }
     </style>
 </head>
 <body>
 
-    <header class="header-section">
-        <div class="color-shift-box">
-            <h1>KAVISH SHAH</h1>
-            <p style="color: #666; font-size: 0.7rem; margin-top: 5px; letter-spacing: 4px;">ELITE SYSTEM ARCHITECT</p>
-        </div>
-    </header>
+    <div class="container">
 
-    <main class="grid-container">
-        <div class="engine-card">
-            <span class="card-label">SNAKE VORTEX CORE</span>
-            <div class="score-panel">
-                <span style="color:var(--neon-green)">SCORE: <span id="snakeScore">0</span></span>
-                <span style="color:var(--neon-pink)">FPS: <span id="snakeFPS">0</span></span>
-            </div>
-            <div class="game-viewport" id="snakeTouch">
-                <canvas id="snakeCanvas" width="400" height="400"></canvas>
-                <div id="snakeOverlay" class="death-overlay">
-                    <h3>WASTED</h3>
-                    <div class="btn-row" style="padding: 0 20px;">
-                        <button class="btn-ui" onclick="snake.init()">RETRY</button>
-                        <button class="btn-ui btn-abort" onclick="snake.abort()">QUIT</button>
-                    </div>
+        <!-- Original System Detector -->
+        <div class="terminal" id="detector">
+            <span id="device-icon">🔍</span>
+            <h1>SYSTEM_ARCHITECTURE_SCAN</h1>
+            
+            <div class="info-grid">
+                <div class="info-item active">
+                    <span class="label">Detected Device</span>
+                    <span class="value" id="device-type">ANALYZING...</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="label">Operating System</span>
+                    <span class="value" id="os-name">...</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Hardware Resolution</span>
+                    <span class="value" id="screen-res">...</span>
+                </div>
+
+                <div class="info-item">
+                    <span class="label">Browser Agent</span>
+                    <span class="value" id="browser-agent" style="font-size: 0.7rem; color: #444;">...</span>
                 </div>
             </div>
-            <div class="joypad">
-                <div></div><button class="btn-dir" onpointerdown="snake.setDir('UP')">▲</button><div></div>
-                <button class="btn-dir" onpointerdown="snake.setDir('LEFT')">◀</button>
-                <button class="btn-dir" onpointerdown="snake.setDir('DOWN')">▼</button>
-                <button class="btn-dir" onpointerdown="snake.setDir('RIGHT')">▶</button>
-            </div>
-            <div class="btn-row">
-                <button class="btn-ui" onclick="snake.init()">START SNAKE</button>
-                <button class="btn-ui btn-abort" onclick="snake.abort()">ABORT</button>
-            </div>
         </div>
 
-        <div class="engine-card">
-            <span class="card-label">MINESWEEPER MATRIX</span>
-            <div class="score-panel">
-                <span style="color:var(--neon-green)">SCORE: <span id="mineScore">0</span></span>
-                <span style="color:var(--neon-pink)">FPS: <span id="mineFPS">0</span></span>
-            </div>
-            <div class="game-viewport">
-                <div id="mGrid" class="mine-field"></div>
-                <div id="mineOverlay" class="death-overlay">
-                    <h3>BREACHED</h3>
-                    <div class="btn-row" style="padding: 0 20px;">
-                        <button class="btn-ui" onclick="mines.init()">RETRY</button>
-                        <button class="btn-ui btn-abort" onclick="mines.quit()">QUIT</button>
-                    </div>
+        <!-- Ludo Game Section -->
+        <div id="ludo-section">
+            <div class="terminal">
+                <h1 class="glitch">LUDO NEON</h1>
+
+                <div class="game-header">
+                    <div class="status" id="turn-status">Choose your color to begin</div>
+                </div>
+
+                <div class="color-choice" id="color-select">
+                    <div class="color-btn" style="background: var(--neon-red);"   onclick="selectColor('red')"></div>
+                    <div class="color-btn" style="background: var(--neon-green);" onclick="selectColor('green')"></div>
+                    <!-- You can add blue/yellow later if you want 4 colors -->
+                </div>
+
+                <div class="dice-area">
+                    <div id="dice">🎲</div>
+                    <button class="button-neon" id="rollBtn" onclick="rollDice()" disabled>ROLL DICE</button>
+                    <button class="button-neon abort" onclick="abortGame()">ABORT GAME</button>
+                </div>
+
+                <div id="board">
+                    <div class="path"></div>
+                    <div class="home" id="home-red">HOME</div>
+                    <div class="home" id="home-green">HOME</div>
+                    <div class="token" id="token-red"   style="left:20px; bottom:20px;"></div>
+                    <div class="token" id="token-green" style="left:calc(100% - 48px); top:20px;"></div>
                 </div>
             </div>
-            <div class="btn-row">
-                <button class="btn-ui" onclick="mines.init()">START MATRIX</button>
-                <button class="btn-ui btn-abort" onclick="mines.quit()">ABORT</button>
-            </div>
         </div>
-    </main>
 
-    <div class="sys-log" id="termLog">[SYS] Ready. Manual activation required.</div>
+        <!-- Winner Screen -->
+        <div id="winner-screen">
+            <h1 id="winner-text"></h1>
+            <button class="button-neon" onclick="restartGame()">RESTART</button>
+            <button class="button-neon abort" onclick="quitToStart()">QUIT</button>
+        </div>
+
+    </div>
 
     <script>
-        const term = (msg) => {
-            const l = document.getElementById('termLog');
-            l.innerHTML += `<br>> ${msg}`;
-            l.scrollTop = l.scrollHeight;
-        };
+        // ── SYSTEM DETECTOR (unchanged) ────────────────────────────────────────
+        function runSystemScan() {
+            const ua = navigator.userAgent;
+            const platform = navigator.platform || "";
+            const vendor = navigator.vendor || "";
+            
+            let deviceType = "LAPTOP / DESKTOP";
+            let osName = "UNKNOWN SYSTEM";
+            let icon = "💻";
 
-        /* --- FPS UTILITY --- */
-        let lastFrame = 0;
-        function updateFPS(now, elementId) {
-            const dt = now - lastFrame;
-            lastFrame = now;
-            if (now % 20 < 1) {
-                const fps = Math.round(1000 / dt);
-                document.getElementById(elementId).innerText = fps > 60 ? 60 : fps;
+            const isIOS = /iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+            const isAndroid = /Android/i.test(ua);
+
+            if (isIOS) {
+                deviceType = "iOS DEVICE";
+                osName = "APPLE iOS";
+                icon = "📱";
+            } else if (isAndroid) {
+                deviceType = "ANDROID MOBILE";
+                osName = "GOOGLE ANDROID";
+                icon = "🤖";
+            } else {
+                if (/Windows/i.test(ua)) osName = "WINDOWS OS";
+                else if (/Macintosh/i.test(ua)) osName = "macOS";
+                else if (/Linux/i.test(ua)) osName = "LINUX DISTRO";
+                deviceType = "LAPTOP / WORKSTATION";
+                icon = "💻";
+            }
+
+            document.getElementById('device-type').innerText = deviceType;
+            document.getElementById('device-type').classList.add('glitch');
+            document.getElementById('os-name').innerText = osName;
+            document.getElementById('device-icon').innerText = icon;
+            document.getElementById('screen-res').innerText = `${window.screen.width} x ${window.screen.height}`;
+            document.getElementById('browser-agent').innerText = ua;
+        }
+        window.onload = runSystemScan;
+
+        // ── LUDO GAME LOGIC ─────────────────────────────────────────────────────
+        let gameActive = false;
+        let currentPlayer = null; // 'red' or 'green'
+        let playerColor = null;
+        let diceValue = 0;
+        let positions = { red: 0, green: 0 }; // 0 = start, 1-52 = path, 53+ = home stretch
+        const pathLength = 52; // classic ludo path length before home
+
+        function selectColor(color) {
+            playerColor = color;
+            currentPlayer = 'red'; // Red starts
+            document.getElementById('turn-status').innerText = `Player RED starts → Roll Dice`;
+            document.getElementById('rollBtn').disabled = false;
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
+            document.getElementById('color-select').style.display = 'none';
+        }
+
+        function rollDice() {
+            if (!gameActive) {
+                gameActive = true;
+            }
+            if (currentPlayer !== playerColor) return;
+
+            diceValue = Math.floor(Math.random() * 6) + 1;
+            document.getElementById('dice').innerText = diceValue;
+
+            moveToken(currentPlayer, diceValue);
+
+            // Check win
+            if (positions[currentPlayer] >= pathLength + 1) {
+                showWinner(currentPlayer.toUpperCase());
+                return;
+            }
+
+            // Switch turn
+            currentPlayer = currentPlayer === 'red' ? 'green' : 'red';
+            document.getElementById('turn-status').innerText = `Turn: ${currentPlayer.toUpperCase()}`;
+        }
+
+        function moveToken(player, steps) {
+            positions[player] += steps;
+
+            let pos = positions[player];
+            let left, top;
+
+            // Very simplified path visualization (clockwise square path)
+            if (pos <= 13) { // bottom row right
+                left = 20 + pos * 35;
+                top  = 'calc(100% - 60px)';
+            } else if (pos <= 26) { // right column up
+                left = 'calc(100% - 60px)';
+                top  = 'calc(100% - 60px - ' + ((pos-13)*35) + 'px)';
+            } else if (pos <= 39) { // top row left
+                left = 'calc(100% - 60px - ' + ((pos-26)*35) + 'px)';
+                top  = 20 + 'px';
+            } else if (pos <= 52) { // left column down
+                left = 20 + 'px';
+                top  = 20 + (pos-39)*35 + 'px';
+            } else {
+                // Home
+                left = player === 'red' ? '30px' : 'calc(100% - 110px)';
+                top  = player === 'red' ? 'calc(100% - 110px)' : '30px';
+            }
+
+            document.getElementById(`token-${player}`).style.left = left;
+            document.getElementById(`token-${player}`).style.top  = top;
+
+            // Simple kill logic
+            if (pos < pathLength && positions.red === positions.green && player !== currentPlayer) {
+                positions[currentPlayer === 'red' ? 'green' : 'red'] = 0;
+                document.getElementById(`token-${currentPlayer === 'red' ? 'green' : 'red'}`).style.left = currentPlayer === 'red' ? 'calc(100% - 48px)' : '20px';
+                document.getElementById(`token-${currentPlayer === 'red' ? 'green' : 'red'}`).style.top = currentPlayer === 'red' ? '20px' : 'calc(100% - 60px)';
+                document.getElementById('turn-status').innerText += " - KILL!";
             }
         }
 
-        /* --- SNAKE ENGINE --- */
-        const snake = {
-            canvas: document.getElementById('snakeCanvas'),
-            ctx: document.getElementById('snakeCanvas').getContext('2d'),
-            body: [], apple: {x: 0, y: 0},
-            dir: 'RIGHT', nextDir: 'RIGHT',
-            score: 0, active: false, lastTick: 0,
+        function showWinner(winner) {
+            document.getElementById('winner-text').innerText = `${winner} WINS!`;
+            document.getElementById('winner-text').style.color = winner === 'RED' ? 'var(--neon-red)' : 'var(--neon-green)';
+            document.getElementById('winner-screen').style.display = 'flex';
+            document.getElementById('rollBtn').disabled = true;
+        }
 
-            init() {
-                document.getElementById('snakeOverlay').style.display = 'none';
-                this.active = true;
-                this.body = [{x:200, y:200}, {x:180, y:200}, {x:160, y:200}];
-                this.dir = 'RIGHT'; this.nextDir = 'RIGHT';
-                this.score = 0;
-                this.spawnApple();
-                document.getElementById('snakeScore').innerText = "0";
-                term("Snake Engine: ACTIVE");
-                requestAnimationFrame((t) => this.run(t));
-            },
-            abort() { this.active = false; document.getElementById('snakeOverlay').style.display = 'none'; this.ctx.clearRect(0,0,400,400); term("Snake Engine: HALTED"); },
-            spawnApple() { this.apple = { x: Math.floor(Math.random()*20)*20, y: Math.floor(Math.random()*20)*20 }; },
-            setDir(d) { if(d==='UP'&&this.dir!=='DOWN') this.nextDir='UP'; if(d==='DOWN'&&this.dir!=='UP') this.nextDir='DOWN'; if(d==='LEFT'&&this.dir!=='RIGHT') this.nextDir='LEFT'; if(d==='RIGHT'&&this.dir!=='LEFT') this.nextDir='RIGHT'; },
-            run(t) {
-                if(!this.active) return;
-                updateFPS(t, 'snakeFPS');
-                if(t - this.lastTick > 110) { this.lastTick = t; this.update(); }
-                this.draw();
-                requestAnimationFrame((t) => this.run(t));
-            },
-            update() {
-                this.dir = this.nextDir;
-                const head = {...this.body[0]};
-                if(this.dir==='UP') head.y-=20; if(this.dir==='DOWN') head.y+=20; if(this.dir==='LEFT') head.x-=20; if(this.dir==='RIGHT') head.x+=20;
-                if(head.x<0) head.x=380; if(head.x>=400) head.x=0; if(head.y<0) head.y=380; if(head.y>=400) head.y=0;
-                if(this.body.some(s=>s.x===head.x&&s.y===head.y)) { 
-                    this.score = 0; 
-                    document.getElementById('snakeScore').innerText = "0";
-                    this.active=false; 
-                    document.getElementById('snakeOverlay').style.display='flex'; 
-                    return; 
-                }
-                this.body.unshift(head);
-                if(head.x===this.apple.x && head.y===this.apple.y) { this.score+=10; document.getElementById('snakeScore').innerText=this.score; this.spawnApple(); }
-                else this.body.pop();
-            },
-            draw() {
-                const c = this.ctx; c.fillStyle='#000'; c.fillRect(0,0,400,400);
-                c.fillStyle='#ff3131'; c.beginPath(); c.arc(this.apple.x+10,this.apple.y+10,8,0,Math.PI*2); c.fill();
-                this.body.forEach((s,i) => { c.fillStyle=(i===0)?'#00f2ff':'#006677'; c.fillRect(s.x+1,s.y+1,18,18); });
+        function abortGame() {
+            if (confirm("Abort current game?")) {
+                resetGame();
+                document.getElementById('ludo-section').style.display = 'none';
+                document.getElementById('detector').style.display = 'block';
             }
-        };
+        }
 
-        /* --- MINESWEEPER ENGINE --- */
-        const mines = {
-            score: 0,
-            active: false,
-            init() {
-                this.score = 0; 
-                this.active = true;
-                document.getElementById('mineOverlay').style.display = 'none';
-                document.getElementById('mineScore').innerText = "0";
-                const g = document.getElementById('mGrid'); g.innerHTML = '';
-                for(let i=0; i<64; i++) {
-                    const t = document.createElement('div');
-                    t.className = 'tile';
-                    t.onclick = () => this.click(t);
-                    g.appendChild(t);
-                }
-                term("Minesweeper Matrix: ACTIVE");
-                requestAnimationFrame((t) => this.mon(t));
-            },
-            click(t) {
-                if(!this.active || t.style.background === 'rgb(34, 34, 34)') return;
-                if(Math.random() < 0.15) {
-                    t.innerText = '💣'; t.style.background = '#ff3131';
-                    this.score = 0; document.getElementById('mineScore').innerText = "0";
-                    this.active = false;
-                    document.getElementById('mineOverlay').style.display = 'flex';
-                    term("SYSTEM BREACHED.");
-                } else {
-                    t.innerText = Math.floor(Math.random()*4);
-                    t.style.background = '#222'; t.style.color = '#39ff14';
-                    this.score += 5;
-                    document.getElementById('mineScore').innerText = this.score;
-                }
-            },
-            quit() { 
-                this.active = false; this.score = 0;
-                document.getElementById('mineScore').innerText = "0";
-                document.getElementById('mineOverlay').style.display='none'; 
-                document.getElementById('mGrid').innerHTML=''; 
-                term("Minesweeper Matrix: HALTED");
-            },
-            mon(t) { if(this.active) { updateFPS(t, 'mineFPS'); requestAnimationFrame((t)=>this.mon(t)); } }
-        };
+        function restartGame() {
+            document.getElementById('winner-screen').style.display = 'none';
+            resetGame();
+        }
 
-        /* --- GESTURES --- */
-        let sx=0, sy=0;
-        document.getElementById('snakeTouch').addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
-        document.getElementById('snakeTouch').addEventListener('touchend', e => {
-            let dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
-            if(Math.abs(dx)>Math.abs(dy)) snake.setDir(dx>0?'RIGHT':'LEFT');
-            else snake.setDir(dy>0?'DOWN':'UP');
-        }, {passive:true});
+        function quitToStart() {
+            document.getElementById('winner-screen').style.display = 'none';
+            document.getElementById('ludo-section').style.display = 'none';
+            document.getElementById('detector').style.display = 'block';
+            resetGame();
+        }
+
+        function resetGame() {
+            gameActive = false;
+            currentPlayer = null;
+            playerColor = null;
+            positions = { red: 0, green: 0 };
+            document.getElementById('dice').innerText = '🎲';
+            document.getElementById('turn-status').innerText = 'Choose your color to begin';
+            document.getElementById('rollBtn').disabled = true;
+            document.getElementById('color-select').style.display = 'block';
+            document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('selected'));
+
+            // Reset tokens position
+            document.getElementById('token-red').style.left = '20px';
+            document.getElementById('token-red').style.top  = 'calc(100% - 60px)';
+            document.getElementById('token-green').style.left = 'calc(100% - 48px)';
+            document.getElementById('token-green').style.top  = '20px';
+        }
+
+        // Optional: start Ludo after detection (you can add a button if you want)
+        // For now user can scroll down or add your own start button
     </script>
 </body>
 </html>
